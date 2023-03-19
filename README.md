@@ -17,7 +17,7 @@ Criar um sistema de gestão escolar (customizado), para oferecer a um administra
 - React
 
 ## Membros e papéis
-- Daniel
-- Fábio
+- Daniel: Frontend
+- Fábio: Backend
 - Misael: Backend
 - Thiago: Frontend
