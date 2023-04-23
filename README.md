@@ -23,6 +23,8 @@ Criar um sistema de gestão escolar (customizado), para oferecer a um administra
 - Thiago: Frontend
 
 ## Backlog do Produto
+<details>
+<summary>Clique aqui para expandir</summary>
 
 1. Como professor, eu gostaria de cadastrar um aluno
 2. Como professor, eu gostaria de atualizar a informação de um aluno ou removê-lo
@@ -37,8 +39,12 @@ Criar um sistema de gestão escolar (customizado), para oferecer a um administra
 11. Como professor, gostaria de adicionar documentos e fotos de um evento
 12. Como professor, gostaria de fazer o download das fotos e documentos de um evento
 13. Como professor, gostaria de logar no sistema de gestão escolar
+</details>
+
 
 ## Backlog da Sprint
+<details>
+<summary>Clique aqui para expandir</summary>
 
 #### História #1: Configuração de ambiente
 - Tarefas e responsáveis:
@@ -93,3 +99,5 @@ Criar um sistema de gestão escolar (customizado), para oferecer a um administra
   - Criar APIs para adicionar adicionar período letivo [Misael]
   - Criar interfaces no calendário para adicionar período letivo [Thiago]
   - Integrar tela do calendário com o backend [Thiago]
+
+</details>
