@@ -161,3 +161,7 @@ cython_debug/
 
 #Docker
 data/
+
+#frontend
+frontend/node_modules/
+node_modules/
