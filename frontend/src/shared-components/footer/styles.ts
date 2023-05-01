@@ -8,7 +8,7 @@ export const Container = styled(Box)(({theme}) => ({
   width: '100%',
   flex: 1,
   background: theme.palette.primary.main,
-  margin: '-8px',
+  margin: '0px -8px',
   gap: '16px',
   position: 'absolute',
   bottom: 0,
