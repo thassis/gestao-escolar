@@ -8,7 +8,8 @@ export const Container = styled(Box)(({theme}) => ({
   flex: 1,
   background: theme.palette.primary.main,
   margin: '-8px',
-  gap: '16px'
+  gap: '16px',
+  padding: '16px 0px'
 }))
 
 export const Title = styled(Typography)(({theme}) => ({

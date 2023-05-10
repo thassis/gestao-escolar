@@ -7,6 +7,7 @@ import { ThemeProvider as MuiThemeProvider } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material/styles";
 import Footer from "./shared-components/footer/Footer";
+import RegisterStudent from "pages/register-student/RegisterStudent";
 
 let theme = createTheme({
   palette: {
@@ -31,6 +32,7 @@ function App() {
             <Route path="/">
               <Route index element={<Login />} />
               <Route path="home" element={<Home />} />
+              <Route path="register-student" element={<RegisterStudent />} />
               <Route path="*" element={<NoPage />} />
             </Route>
           </Routes>
