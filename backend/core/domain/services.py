@@ -1,6 +1,7 @@
 """Domain layer services module."""
 
-from models import Aluno
+from backend.core.domain.models import Aluno
+
 
 class AlunoService:
     """Aluno service class for domain layer. It provides methods for
