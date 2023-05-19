@@ -1,25 +1,18 @@
 import { Box, Grid, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles';
 
-export const Container = styled(Box)(({theme}) => ({
+export const Descricao = styled(Typography)(({theme}) => ({
   display: 'flex',
-  alignItems: 'center',
   justifyContent: 'center',
-  width: '100%',
-  flex: 1,
-  background: theme.palette.primary.main,
-  margin: '0px -8px',
-  gap: '16px',
-  position: 'absolute',
-  bottom: 0,
+  fontWeight: 700,
+  component:"div",
+  color: theme.palette.secondary.main,
 }))
 
-export const Description = styled(Typography)(({theme}) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  fontSize: '20px',
+export const Subtitle = styled(Typography)(({theme}) => ({
   fontWeight: 700,
-  color: theme.palette.secondary.main,
+  component:"div",
+  color: "#383837",
 }))
 
 export const GridCards = styled(Grid)(({theme}) => ({
