@@ -7,7 +7,7 @@
 
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import column
+from sqlalchemy import column, Engine
 
 from backend.core.domain.models import (
     Professor, Aluno
@@ -185,9 +185,9 @@ class AlunoRepositoryPostgres(AlunoRepository):
 class SQLAlchemySession:
     """SQLAlchemy session class."""
 
-    def __init__(self):
+    def __init__(self, engine: Engine):
         """Initializes the SQLAlchemy session."""
-        self.db_session = Session()
+        self.db_session = Session(bind=engine)
 
     def get_db_session(self) -> Session:
         """Returns the SQLAlchemy session."""
