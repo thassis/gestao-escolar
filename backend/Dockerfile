@@ -8,9 +8,13 @@ ENV PYTHONDONTWRITEBYTECODE 1
 # set work directory
 WORKDIR /app/backend
 
-# install dependencies
 COPY requirements.txt /app/backend/
-RUN pip install --no-cache-dir -r requirements.txt
+
+# install dependencies
+RUN apk add --no-cache postgresql-libs && \
+    apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \
+    pip install --no-cache-dir -r requirements.txt && \
+    apk --purge del .build-deps
 
 # copy project
 COPY . /app/backend/
