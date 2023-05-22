@@ -29,6 +29,23 @@ class ProfessorRepositoryPostgres(ProfessorRepository):
             return False
         return professor.password == password
 
+    def save(self, professor: Professor) -> Professor:
+        """Saves a Professor object to the database."""
+        self.db.add(professor)
+        self.db.commit()
+        self.db.refresh(professor)
+        return professor
+
+    def delete(self, professor: Professor) -> None:
+        """Deletes a Professor object from the database."""
+        self.db.delete(professor)
+        self.db.commit()
+
+    def get_by_id(self, professor_id: int) -> Professor:
+        """Retrieves a Professor object from the database by its ID."""
+        return self.db.query(Professor).filter(Professor.id == professor_id).first()
+
+
 
 class AlunoRepositoryPostgres(AlunoRepository):
     """Aluno repository class for PostgreSQL implementation."""
