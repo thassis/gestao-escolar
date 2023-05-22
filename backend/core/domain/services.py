@@ -74,3 +74,22 @@ class AlunoService:
         """Removes an existing Aluno object from the repository."""
         aluno = self.aluno_repository.get_by_id(aluno_id)
         self.aluno_repository.delete(aluno)
+
+
+    def get_alunos_by_name(self, aluno_name: str) -> dict:
+        """Retrieves one or more existing Aluno object from the repository.
+        Returns a dictionary of alunos, where every aluno object is a
+
+        Args:
+            aluno_name (str): The name of the aluno to be retrieved.
+        Returns:
+            alunos_dict (dict): A dictionary of alunos.
+        """
+        alunos = self.aluno_repository.get_by_name(aluno_name)
+
+        # get all alunos and change it to a dictionary of alunos
+        alunos_dict = {'Aluno': []} # {'Aluno': [{'id': 1, name: 'joao',...}, aluno2, ...]}
+        for aluno in alunos:
+            alunos_dict['Aluno'].append(aluno.__dict__)
+
+        return alunos_dict

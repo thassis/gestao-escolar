@@ -37,3 +37,8 @@ class AlunoRepository(ABC):
     def delete(self, aluno: Aluno) -> None:
         """Deletes an Aluno object from the repository."""
         pass
+
+    @abstractmethod
+    def get_by_name(self, aluno_name: str) -> list[Aluno]:
+        """Retrieves an Aluno object from the repository by its name."""
+        pass

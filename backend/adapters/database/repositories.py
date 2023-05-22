@@ -55,3 +55,13 @@ class AlunoRepositoryPostgres(AlunoRepository):
         """Deletes an Aluno object from the database."""
         self.db.delete(aluno)
         self.db.commit()
+
+
+    def get_by_name(self, aluno_name: str) -> list[Aluno]:
+        """Retrieves one or more Aluno object from the database by its name.
+        Args:
+            aluno_name (str): Aluno name.
+        Returns:
+            list[Aluno]: List of Aluno objects.
+        """
+        return self.db.query(Aluno).filter(Aluno.name == aluno_name)
