@@ -63,7 +63,7 @@ class ProfessorService:
         professor = self.professor_repository.get_by_id(professor_id)
         self.professor_repository.delete(professor)
 
-    def get_professor(self, professor_name):
+    def get_professor_by_name(self, professor_name):
         """Retrieves an existing Professor object from the repository."""
         professor = self.professor_repository.get_by_name(professor_name)
         return professor

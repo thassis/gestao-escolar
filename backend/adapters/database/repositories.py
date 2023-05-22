@@ -94,6 +94,19 @@ class ProfessorRepositoryPostgres(ProfessorRepository):
         return professor
 
 
+    def get_by_name(self, professor_name: str) -> list[Professor]:
+        """Retrieves one or more Professor object from the database by its name.\\
+        Args:
+            professor_name (str): Professor name.
+        Returns:
+            list[Professor]: List of Professor objects.
+        """
+        professors = self.database.query(Professor).filter(column('name') == professor_name).all()
+        if professors is None:
+            return []
+        return professors
+
+
 class AlunoRepositoryPostgres(AlunoRepository):
     """Aluno repository class for PostgreSQL implementation."""
 

@@ -14,7 +14,7 @@ class ProfessorRepository(ABC):
     for veryfing professor login credentials."""
 
     @abstractmethod
-    def verify_login(self, email: str, password: str) -> bool:
+    def verify_login(self, professor_email: str, professor_password: str) -> bool:
         """Verifies professor login credentials."""
         pass
 
