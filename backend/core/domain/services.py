@@ -27,7 +27,9 @@ class ProfessorService:
         return True
 
     def create_professor(self, name, email, password):
-        """Creates a new Professor object and saves it to the repository."""
+        """Creates a new Professor object and saves it to the repository.
+        When creating a new Professor object, the ID does not need to be
+        provided, as it is generated automatically by the repository."""
         professor = Professor(
             id=None,
             name=name,
@@ -72,15 +74,18 @@ class AlunoService:
     creating, updating, and removing Aluno objects. It takes an
     aluno_repository object as a dependency."""
 
-    def __init__(self, aluno_repository):
+    def __init__(self, aluno_repository: AlunoRepository):
         """Initializes the service with an AlunoRepository object."""
         self.aluno_repository = aluno_repository
 
     def create_aluno(self, name, born_date, address, tutor_name,
                     tutor_phone, class_shift):
-        """Creates a new Aluno object and saves it to the repository."""
+        """Creates a new Aluno object and saves it to the repository.
+        When creating a new Aluno object, the ID does not need to be
+        specified, since it is generated automatically by the database.
+        """
         aluno = Aluno(
-            id=None, # BUG
+            id=None,
             name=name,
             born_date=born_date,
             address=address,

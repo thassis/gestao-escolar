@@ -7,7 +7,7 @@ from datetime import date
 @dataclass
 class Aluno:
     """Aluno model class for domain layer."""
-    id: int
+    id: int | None
     name: str
     born_date: date
     address: str
@@ -19,7 +19,7 @@ class Aluno:
 @dataclass
 class Presenca:
     """Presenca model class for domain layer."""
-    id: int
+    id: int | None
     aluno_id: int
     status: str
     document: str
@@ -29,7 +29,7 @@ class Presenca:
 @dataclass
 class Professor:
     """Professor model class for domain layer."""
-    id: int
+    id: int | None
     name: str
     email: str
     password: str
