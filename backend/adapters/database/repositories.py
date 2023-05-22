@@ -169,3 +169,17 @@ class AlunoRepositoryPostgres(AlunoRepository):
         return alunos
 
 
+class SQLAlchemySession:
+    """SQLAlchemy session class."""
+
+    def __init__(self):
+        """Initializes the SQLAlchemy session."""
+        self.db_session = Session()
+
+    def get_db_session(self) -> Session:
+        """Returns the SQLAlchemy session."""
+        return self.db_session
+
+    def close_db_session(self):
+        """Closes the database session."""
+        self.db_session.close()
