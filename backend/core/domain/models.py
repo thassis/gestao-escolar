@@ -31,5 +31,5 @@ class Professor:
     """Professor model class for domain layer."""
     id: int
     name: str
-    login: str
+    email: str
     password: str

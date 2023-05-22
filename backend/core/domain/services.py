@@ -1,6 +1,27 @@
-"""Domain layer services module."""
+"""Domain layer services module.
+
+- O serviço está desacoplado de qualquer implementação específica,
+  tal como DB ou ORM
+"""
 
 from backend.core.domain.models import Aluno
+
+
+class ProfessorService:
+    """Professor service class for domain layer. It provides methods for
+    verifying professor login credentials. It takes a professor_repository
+    object as a dependency."""
+
+    def __init__(self, professor_repository):
+        """Initializes the service with a ProfessorRepository object."""
+        self.professor_repository = professor_repository
+
+    def verify_login(self, email, password):
+        """Verifies professor login credentials."""
+        login = self.professor_repository.verify_login(email, password)
+        if login is None:
+            return False
+        return login
 
 
 class AlunoService:

@@ -1,7 +1,22 @@
-"""Repository interface for domain layer."""
+"""Repository interface for domain layer.
+
+- A Interface define as operações que o domínio precisa.
+- A implementação das operações é feita fora, no adaptador.
+- Domínio está desacoplado de qualquer implementação específica
+"""
 
 from abc import ABC, abstractmethod
 from backend.core.domain.models import Aluno
+
+
+class ProfessorRepository(ABC):
+    """Professor repository interface for domain layer. It defines the methods
+    for veryfing professor login credentials."""
+
+    @abstractmethod
+    def verify_login(self, email: str, password: str) -> bool:
+        """Verifies professor login credentials."""
+        pass
 
 
 class AlunoRepository(ABC):

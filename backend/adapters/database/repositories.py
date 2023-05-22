@@ -1,8 +1,33 @@
-"""Database repositories module."""
+"""Database repositories module.
+
+- Implementa as operações necessárias para o domínio salvar os dados
+- Implementa a interface para salvar e recuperar dados do DB
+- Aqui, pode ser usado qualquer tecnologia
+"""
 
 from sqlalchemy.orm import Session
-from backend.core.domain.models import Aluno
-from backend.core.interfaces.repositories import AlunoRepository
+from backend.core.domain.models import (
+    Professor, Aluno
+)
+from backend.core.interfaces.repositories import(
+    ProfessorRepository, AlunoRepository
+    )
+
+
+class ProfessorRepositoryPostgres(ProfessorRepository):
+    """Professor repository class for PostgreSQL implementation."""
+
+    def __init__(self, db: Session):
+        """Initializes the repository with a database session."""
+        self.db = db
+
+
+    def verify_login(self, email: str, password: str) -> bool:
+        """Verifies professor login credentials."""
+        professor = self.db.query(Professor).filter(Professor.email == email).first()
+        if professor is None:
+            return False
+        return professor.password == password
 
 
 class AlunoRepositoryPostgres(AlunoRepository):
