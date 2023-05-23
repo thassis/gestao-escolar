@@ -46,6 +46,8 @@ const Login = () => {
           onChange={(e) => setEmail(e.target.value)}
           label="E-mail"
           variant="outlined"
+          helperText={errorEmail && "Campo obrigatório"}
+          role="alert"
         />
 
         <TextField
@@ -55,6 +57,8 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           label="Senha"
           variant="outlined"
+          helperText={errorPassword ? "Campo obrigatório" : ""}
+          inputProps={{ "aria-label": "password-helper-text" }}
         />
 
         <LoginButton variant="contained" onClick={() => onClickEnter()}>

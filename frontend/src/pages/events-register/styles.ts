@@ -45,8 +45,6 @@ export const Column = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   flex: 1,
   gap: "24px",
-  alignItems: "center",
-  justifyContent: "center",
   padding: "32px 16px",
 }));
 

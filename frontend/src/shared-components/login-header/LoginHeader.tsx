@@ -6,7 +6,7 @@ import LogoIcon from "../../assets/svgs/LogoIcon";
 const LoginHeader = () => {
   return (
     <Container>
-      <LogoIcon />
+      <LogoIcon data-testid="logo-icon" />
       <Box>
         <Title>Sistema de</Title>
         <Subtitle>gestão escolar</Subtitle>

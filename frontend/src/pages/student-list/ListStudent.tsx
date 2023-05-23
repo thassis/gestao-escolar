@@ -1,25 +1,63 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Box } from '@mui/system';
-import { useNavigate } from "react-router-dom";
-import { Button, Divider, Icon, IconButton, InputAdornment, InputBase, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SearchIcon from '@mui/icons-material/Search';
-import DirectionsIcon from '@mui/icons-material/Directions';
+import { 
+  IconButton, 
+  Pagination, 
+  Paper, 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableContainer, 
+  TableFooter, 
+  TableHead, 
+  TableRow, 
+  TextField, 
+  Typography
+} from "@mui/material";
 
-
-import Header from "shared-components/header/Header";
-import { Descricao, GridCards, Subtitle } from "./styles";
-import { nextEvent } from "data/nextEvent";
-import { MenuList } from "data/data";
-
+import Header from "shared-components/header/Header";import { AlunosServices, IListagemALunos } from "services/alunos/AlunosServices";
+import { useDebounce } from "shared-components/hooks";
+import { Environment } from "shared-components/environment";
+;
 
 const ListStudent = () => {
+  //Definindo os stats
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [totalCount, setTotalCount] = useState(0);
+  const [rows, setRows] = useState<IListagemALunos[]>([]);
+  const { debounce } = useDebounce();
 
-  //Importando as imagens
-  const NextEvent = require('../../images/evento.jpg');
-  const OldEvent = require('../../images/evento4.jpg');
-  const RegisterEvent = require('../../images/evento3.jpg');
+  const busca = useMemo(() => {
+    return searchParams.get('busca') || '';
+  }, [searchParams]);
+
+  //Pegando a página atual
+  const pagina = useMemo(() => {
+    return Number(searchParams.get('pagina') || '1');
+  }, [searchParams]);
+
+    //Realizar as consultas dentro de um useEffect
+    useEffect(() => {
+  
+      debounce(() => {
+        AlunosServices.getAll(pagina, busca)
+        //Consulta foi finalizada
+          .then((result) => {
+            if(result instanceof Error){
+              alert(result.message);
+            }else{
+              console.log(result);
+  
+              setTotalCount(result.totalCount);
+              setRows(result.data);
+            }
+          });
+      });
+    }, [busca, pagina]);
 
   //Navegacao
   const onNavigateEventNext = () =>{
@@ -47,6 +85,8 @@ const ListStudent = () => {
            <TextField
              label="Busca por aluno"
              type="search"
+             value={busca}
+             onChange={texto => setSearchParams({ busca: texto.target.value, pagina: '1' }, { replace: true })}
              sx={{ flexGrow: 1 }}
            />
            <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
@@ -61,7 +101,7 @@ const ListStudent = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell width={100}>Excluir/Editar</TableCell>
+                <TableCell width={100}>Editar/Excluir</TableCell>
                 <TableCell >Nome dos Alunos</TableCell>
                 <TableCell>Turma</TableCell>
                 <TableCell>Informações</TableCell>
@@ -69,82 +109,39 @@ const ListStudent = () => {
             </TableHead>
     
             <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <IconButton size="small">
-                      <DeleteIcon />
-                    </IconButton>
-                    <IconButton size="small">
-                      <EditIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell>Aline de Morão</TableCell>
-                  <TableCell>Turma de inglês I1</TableCell>
-                  <TableCell>Inglês básico</TableCell>
-                </TableRow>
+              {rows.map(row => (  
+                <TableRow data-testid="student-row">
+                <TableCell>
+                  <IconButton size="small">
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton size="small">
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.class_shift}</TableCell>
+                <TableCell>Inglês básico</TableCell>
+              </TableRow>
+              ))}
             </TableBody>
 
-            <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <IconButton size="small">
-                      <DeleteIcon />
-                    </IconButton>
-                    <IconButton size="small">
-                      <EditIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell>Antonio Silva</TableCell>
-                  <TableCell>Turma de matemática M1</TableCell>
-                  <TableCell>Matemática básica</TableCell>
-                </TableRow>
-            </TableBody>
-
-            <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <IconButton size="small">
-                      <DeleteIcon />
-                    </IconButton>
-                    <IconButton size="small">
-                      <EditIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell>Carlos Alberto</TableCell>
-                  <TableCell>Turma de computação C1</TableCell>
-                  <TableCell>Computação básica básica</TableCell>
-                </TableRow>
-            </TableBody>
-
-            <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <IconButton size="small">
-                      <DeleteIcon />
-                    </IconButton>
-                    <IconButton size="small">
-                      <EditIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell>Fernanda Silva</TableCell>
-                  <TableCell>Turma de programação</TableCell>
-                  <TableCell>Programação básica</TableCell>
-                </TableRow>
-            </TableBody>
-            
+            {totalCount === 0 &&(
+            <caption>{Environment.LISTAGEM_VAZIA}</caption>
+            )}
 
             <TableFooter>
-                <TableRow>
-                  <TableCell colSpan={3}>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell colSpan={3}>
-                    <Pagination 
-
-                    />
-                  </TableCell>
-                </TableRow>
+            {(totalCount > 0 && totalCount > Environment.LIMITE_DE_LINHAS) && (
+              <TableRow>
+                <TableCell colSpan={3}>
+                  <Pagination 
+                    page={pagina}
+                    count={Math.ceil(totalCount/Environment.LIMITE_DE_LINHAS)}
+                    onChange={(_, newPage) => setSearchParams({busca, pagina: newPage.toString()}, {replace: true})}
+                  />
+                </TableCell>
+              </TableRow>
+            )}
             </TableFooter>
           </Table>
         </TableContainer>
@@ -156,3 +153,7 @@ const ListStudent = () => {
 };
 
 export default ListStudent;
+function debounce(arg0: () => void) {
+  throw new Error("Function not implemented.");
+}
+

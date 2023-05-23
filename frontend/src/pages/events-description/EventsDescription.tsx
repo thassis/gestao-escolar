@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from '@mui/system';
 import { useNavigate } from "react-router-dom";
-import { Button, Card, CardActionArea, CardContent, Grid, Paper, Typography } from "@mui/material";
+import { Button, Card, CardActionArea, CardContent, Grid, IconButton, Paper, Typography } from "@mui/material";
 import CardMedia from '@mui/material/CardMedia';
 
 import Header from "shared-components/header/Header";
@@ -30,12 +30,12 @@ const EventsDescription = () => {
             Descrição do evento
           </Typography>
           <Typography variant="body1">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget
+            Evento de Tecnologia ocorrido dia 01/04/2023, com a participação de 50 pessoas, trando de assuntos sobre tecnologia e inovação.
           </Typography>
 
           <Box sx={{display: "flex", flexWrap: "wrap", justifyContent: "space-around"}}>
-            {nextEvent.map((menu) => (
-              <Card sx={{ maxWidth: "390px", display: "flex", m: 2 }}>
+            {nextEvent.map((menu, index) => (
+              <Card key={index} sx={{ maxWidth: "390px", display: "flex", m: 2 }}>
                 <CardActionArea>
                   <CardMedia
                     sx={{ minHeight: "200px", maxHeight: "200px", minWidth: "200px", maxWidth: "200px"}}

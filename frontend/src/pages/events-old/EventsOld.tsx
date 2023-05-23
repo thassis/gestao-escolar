@@ -38,7 +38,7 @@ const EventsOld = () => {
         {/* Necessario refatorar esta parte do codigo pois esta estatica */}
         <Box  sx={{display: "flex", flexWrap: "wrap", justifyContent: "space-around"}}>
 
-            <Card sx={{ maxWidth: "500px", display: "flex", m: 2 }} onClick={() => onNavigateTecnologia()}>
+            <Card sx={{ maxWidth: "500px", display: "flex", m: 2 }} data-testid="eventos-tecnologia-card" onClick={() => onNavigateTecnologia()}>
               <CardActionArea>
                 <CardMedia
                   sx={{ minHeight: "400px" }}
@@ -60,7 +60,7 @@ const EventsOld = () => {
                   sx={{ minHeight: "400px" }}
                   component={"img"}
                   src={EventoDeSaude}
-
+                  data-testid="evento-tecnologia-image"
                 />
                 <CardContent>
                   <Descricao variant="h5" gutterBottom >

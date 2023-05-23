@@ -16,7 +16,6 @@ const EventsRegister = () => {
     window.location.replace('/scheduled-events');
   }
 
-  
   return (
     <>
       <Header />

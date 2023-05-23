@@ -110,7 +110,7 @@ const RegisterStudent = () => {
             error={errorPhoneResponsibleTeacher}
             value={phoneResponsibleTeacher}
             onChange={(e) => setPhoneResponsibleTeacher(e.target.value)}
-            label="Nome do tutor responsável"
+            label="Telefone do tutor responsável"
             variant="outlined"
           />
 
@@ -119,6 +119,7 @@ const RegisterStudent = () => {
             label="Turno de aula"
             value={shift || ""}
             onChange={(e) => setShift(e.target.value as ClassShift)}
+            data-testid="shift-select"
             select
           >
             {Object.keys(ClassShift).map((key) => (

@@ -89,7 +89,7 @@ const Home = () => {
                     <CadastroAlunoIcon width={300} height={300}/>
                   </BoxImage>
                   <Description>
-                    Editar/Excluir Aluno
+                    Lista de alunos
                   </Description>
                 </CardContent>
               </Card>

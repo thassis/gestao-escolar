@@ -15,7 +15,6 @@ const EventsAddPhotos = () => {
     window.location.replace('/events-description');
   }
 
-  
   return (
     <>
       <Header />
@@ -41,7 +40,9 @@ const EventsAddPhotos = () => {
             Adicionar novas fotos
           </Typography>
           <Button variant="contained"  sx={{color: "#ffffff", fontSize: "1.2rem" }} >
-            Adicionar novas fotos
+            <Typography variant="body1">
+              Escolher arquivo
+            </Typography>
             <TextField
               fullWidth
               type="file"
@@ -51,6 +52,7 @@ const EventsAddPhotos = () => {
         </Column>
       </Container>
       <Box sx={{textAlign: 'center'}} >
+
         <RegisterButton variant="contained" onClick={() => onNavigateEventsDescription()}>
           Salvar fotos na galeria
         </RegisterButton>

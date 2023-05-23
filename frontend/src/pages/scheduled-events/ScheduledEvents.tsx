@@ -93,8 +93,8 @@ const ScheduledEvents = () => {
             Próximos eventos
           </Subtitle>
             <Box sx={{display: "flex", flexWrap: "wrap", justifyContent: "space-around"}}>
-            {nextEvent.map((menu) => (
-              <Card sx={{ maxWidth: "390px", display: "flex", m: 2 }}>
+            {nextEvent.map((menu, index) => (
+              <Card key={index} sx={{ maxWidth: "390px", display: "flex", m: 2 }}>
                 <CardActionArea>
                   <CardMedia
                     sx={{ minHeight: "200px", maxHeight: "200px", minWidth: "200px", maxWidth: "200px"}}
@@ -119,8 +119,8 @@ const ScheduledEvents = () => {
             Eventos Antigos
           </Subtitle>
             <Box sx={{display: "flex", flexWrap: "wrap", justifyContent: "space-around"}}>
-            {nextEvent.map((menu) => (
-              <Card sx={{ maxWidth: "390px", display: "flex", m: 2 }}>
+            {nextEvent.map((menu, index) => (
+              <Card key={index} sx={{ maxWidth: "390px", display: "flex", m: 2 }}>
                 <CardActionArea>
                   <CardMedia
                     sx={{ minHeight: "200px", maxHeight: "200px", minWidth: "200px", maxWidth: "200px"}}
