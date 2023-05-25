@@ -18,3 +18,12 @@ RUN apk add --no-cache postgresql-libs && \
 
 # copy project
 COPY . /app/backend/
+
+
+# Set Backend API
+# set work directory for flask api
+WORKDIR /app/backend/adapters/api
+# expose port 8000
+EXPOSE 8000
+# run flask app
+CMD python app.py 8000
