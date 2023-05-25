@@ -1,4 +1,7 @@
-rom flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify
+import sys
+sys.path.append('../../../')
+from backend.adapters.controllers.controller import AlunoController, ProfessorController
 
 app = Blueprint('routes', __name__)
 
@@ -20,14 +23,17 @@ def create_aluno() -> tuple:
     tutor_phone = data.get("tutor_phone")
     class_shift = data.get("class_shift")
     
-    ### chamar função pra criar aluno
+    response = AlunoController().create(name, born_date, address, tutor_name, tutor_phone, class_shift)
+    if not response:
+        return jsonify({"error":"Invalid credentials"}), 200
+    
     return data, 200
 
 @app.route("/update/aluno", methods=['POST'])
 def update_aluno() -> tuple:
     data = request.get_json()
-    if not data:
-        return jsonify({'error': 'Invalid data'}), 400
+    if not data.get('id'):
+        return jsonify({'error': 'ID not given'}), 400
     
     id = data.get('id')
     name = data.get('name')
@@ -36,45 +42,92 @@ def update_aluno() -> tuple:
     tutor_name = data.get("tutor_name")
     tutor_phone = data.get("tutor_phone")
     class_shift = data.get("class_shift")
+    
+    response = AlunoController().update(id, name, born_date, address, tutor_name, tutor_phone, class_shift)
+    if not response:
+        return jsonify({"error":"Invalid credentials"}), 200
 
     return data, 200
 
 @app.route("/delete/aluno", methods=['POST'])
 def delete_aluno() -> tuple:
     data = request.get_json()
+    if not data.get('id'):
+        return jsonify({'error': 'Invalid data'}), 400
+    id = data.get('id')
+    
+    response = AlunoController().remove(id)
+    if not response:
+        return jsonify({"error":"Invalid credentials"}), 200
+    return data, 200
+
+
+@app.route("/alunos/<name>", methods=['GET'])
+def get_alunos(name) -> tuple:
+    data = AlunoController().get_alunos_by_name(name)
+    if not data:
+        return jsonify({"error": "Aluno does not exist"}), 400
+
+    return jsonify(data), 200
+
+
+
+"""
+Implementação das rotas para os professores
+"""
+
+@app.route("/login/<email>/<password>", methods=['GET'])
+def login(email, password) -> tuple:
+    if not email or not password:
+        return jsonify({"error":"Invalid data"}), 400
+    
+    response = ProfessorController().login(email, password)
+    if not response:
+        return jsonify({"error":"Invalid credentials"}), 200
+    
+    return jsonify(response), 200
+
+app.route("/create/professor", methods=['POST'])
+def create_professor() -> tuple:
+    data = request.get_json()
     if not data:
         return jsonify({'error': 'Invalid data'}), 400
     
-    id = data.get('id')
     name = data.get('name')
-    born_date = data.get('born_date')
-    address = data.get("address")
-    tutor_name = data.get("tutor_name")
-    tutor_phone = data.get("tutor_phone")
-    class_shift = data.get("class_shift")
-
-    ### chamar função pra criar aluno
+    email = data.get('email')
+    password = data.get("password")
+    
+    response = ProfessorController().create(name, email, password)
+    if not response:
+        return jsonify({"error":"Invalid credentials"}), 200
+    
     return data, 200
 
-@app.route("aluno", methods=['GET'])
-def get_aluno() -> tuple:
+@app.route("/update/professor", methods=['POST'])
+def update_professor() -> tuple:
     data = request.get_json()
     if not data.get('id'):
-        return jsonify({"error": 'Invalid body'}), 400
+        return jsonify({'error': 'ID not given'}), 400
     
     id = data.get('id')
+    name = data.get('name')
+    email = data.get('email')
+    password = data.get('password')
     
-    ###chamar função para retornar um aluno
-    return None, 200
+    response = ProfessorController().update(id, name, email, password)
+    if not response:
+        return jsonify({"error": "Invalid ID"}), 200
+    return data, 200
 
-@app.route("alunos", methods=['GET'])
-def get_alunos() -> tuple:
+@app.route("/delete/professor", methods=['POST'])
+def delete_professor() -> tuple:
     data = request.get_json()
-    if not data:
-        return jsonify({'error', 'Ivalid data'}), 400
+    if not data.get('id'):
+        return jsonify({'error': 'Invalid data'}), 400
     
-    #pegar dados do data
-    
-    ### chamar função para retornar alunos
+    id = data.get('id')
 
+    response = ProfessorController().remove(id)
+    if not response:
+        return jsonify({"error": "Invalid ID"}), 200
     return data, 200
