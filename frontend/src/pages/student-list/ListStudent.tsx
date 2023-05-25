@@ -22,6 +22,7 @@ import {
 import Header from "shared-components/header/Header";import { AlunosServices, IListagemALunos } from "services/alunos/AlunosServices";
 import { useDebounce } from "shared-components/hooks";
 import { Environment } from "shared-components/environment";
+import { BoxList, PaperList } from "./styles";
 ;
 
 const ListStudent = () => {
@@ -78,10 +79,7 @@ const ListStudent = () => {
       <Header />
 
       <Box display='flex' justifyContent='center'>
-        <Paper
-           component="form"
-           sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 600, margin: '20px' }}
-         >
+        <PaperList>
            <TextField
              label="Busca por aluno"
              type="search"
@@ -92,9 +90,10 @@ const ListStudent = () => {
            <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
              <SearchIcon />
            </IconButton>
-         </Paper>
+         </PaperList>
         </Box>
-      <Box display='flex' flexDirection='column' textAlign='center'>
+
+      <BoxList >
         <Typography variant="h4" sx={{ m: 2 }}>Lista de Alunos</Typography>
 
         <TableContainer component={Paper} variant='outlined' sx={{ m: 1, width: 'auto' }}>
@@ -146,7 +145,7 @@ const ListStudent = () => {
           </Table>
         </TableContainer>
 
-      </Box>
+      </BoxList>
       
     </>
   );
