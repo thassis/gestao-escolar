@@ -5,9 +5,9 @@ database adapter to the frontend adapter.
 
 from backend.core.domain.services import AlunoService, ProfessorService
 from backend.adapters.database.repositories import (
-    AlunoRepositoryPostgres, ProfessorRepositoryPostgres,
-    SQLAlchemySession
+    AlunoRepositoryPostgres, ProfessorRepositoryPostgres
 )
+from backend.adapters.database.database import DatabaseSession
 
 
 class AlunoController:
@@ -21,7 +21,7 @@ class AlunoController:
     def __init__(self) -> None:
         """Initializes the controller with a db object, an AlunoRepository
         object, and an AlunoService object."""
-        database = SQLAlchemySession()
+        database = DatabaseSession()
         self.database_session = database.get_db_session()
         self.aluno_repository = AlunoRepositoryPostgres(self.database_session)
         self.aluno_service = AlunoService(self.aluno_repository)
@@ -67,7 +67,7 @@ class ProfessorController:
     def __init__(self,) -> None:
         """Initializes the controller with a db object, an ProfessorRepository
         object, and an ProfessorService object."""
-        database = SQLAlchemySession()
+        database = DatabaseSession()
         self.database_session = database.get_db_session()
         self.professor_repository = ProfessorRepositoryPostgres(self.database_session)
         self.professor_service = ProfessorService(self.professor_repository)

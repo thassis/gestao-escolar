@@ -7,14 +7,14 @@
 
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import column, Engine
+from sqlalchemy import column
 
 from backend.core.domain.models import (
     Professor, Aluno
 )
 from backend.core.interfaces.repositories import(
     ProfessorRepository, AlunoRepository
-    )
+)
 
 
 class ProfessorRepositoryPostgres(ProfessorRepository):
@@ -180,19 +180,3 @@ class AlunoRepositoryPostgres(AlunoRepository):
         if alunos is None:
             return []
         return alunos
-
-
-class SQLAlchemySession:
-    """SQLAlchemy session class."""
-
-    def __init__(self, engine: Engine):
-        """Initializes the SQLAlchemy session."""
-        self.db_session = Session(bind=engine)
-
-    def get_db_session(self) -> Session:
-        """Returns the SQLAlchemy session."""
-        return self.db_session
-
-    def close_db_session(self):
-        """Closes the database session."""
-        self.db_session.close()

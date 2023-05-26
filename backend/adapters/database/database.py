@@ -1,16 +1,37 @@
 """Database ORM models for SQLAlchemy."""
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Engine
 from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
 
-# Create an engine to connect to a database
-# postgresql://<username>:<password>@<host>:<port>/<database_name>
-engine = create_engine(
-    'postgresql://postgres:postgres@localhost:5450/postgres',
-    echo=True)
+class DatabaseSession:
+    """Database session class for SQLAlchemy. It creates a database engine
+    and a session. The engine is used to create the database tables and
+    the session is used to query the database. The engine and session
+    are passed to the repositories.\\
+    """
+    def __init__(self):
+        """Initializes the database engine and session."""
+        # postgresql://<username>:<password>@<host>:<port>/<database_name>
+        self.engine = create_engine(
+            'postgresql://postgres:postgres@localhost:5450/postgres',
+            echo=True)
+
+        self.db_session = Session(bind=self.engine)
+
+    def get_db_session(self) -> Session:
+        """Returns the SQLAlchemy session."""
+        return self.db_session
+
+    def close_db_session(self):
+        """Closes the database session."""
+        self.db_session.close()
+
+    def get_engine(self) -> Engine:
+        """Returns the SQLAlchemy engine."""
+        return self.engine
 
 
 Base = declarative_base()
@@ -38,10 +59,12 @@ class ProfessorORM(Base):
     password = Column(String(100), nullable=False)
 
 
-Base.metadata.create_all(engine)
+def create_tables(engine: Engine):
+    """Creates the database tables."""
+    Base.metadata.create_all(engine)
 
 
-def create_some_alunos():
+def create_some_alunos(engine: Engine):
     """Creates some Aluno objects and saves them to the database."""
     session_maker = sessionmaker(bind=engine)
     session = session_maker()
@@ -74,7 +97,7 @@ def create_some_alunos():
     session.commit()
 
 
-def create_a_professor():
+def create_a_professor(engine: Engine):
     """Creates a Professor object and saves it to the database."""
     session_maker = sessionmaker(bind=engine)
     session = session_maker()
@@ -87,7 +110,7 @@ def create_a_professor():
     session.commit()
 
 
-def delete_all_alunos():
+def delete_all_alunos(engine: Engine):
     """Deletes all Aluno objects from the database."""
     session_maker = sessionmaker(bind=engine)
     session = session_maker()
@@ -97,7 +120,7 @@ def delete_all_alunos():
     session.commit()
 
 
-def delete_all_professors():
+def delete_all_professors(engine: Engine):
     """Deletes all Professor objects from the database."""
     session_maker = sessionmaker(bind=engine)
     session = session_maker()
