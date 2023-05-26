@@ -60,18 +60,25 @@ const ListStudent = () => {
       });
     }, [busca, pagina]);
 
-  //Navegacao
-  const onNavigateEventNext = () =>{
-    window.location.replace('/events-next');
-  }
+    //Lógica para deletar o registro
+    const handleDelete = (id: number) => {
+      if(window.confirm('Realmente deseja apagar?')){
+        AlunosServices.deleteById(id)
+          .then((result) => {
+            if(result instanceof Error){
+              alert(result.message);
+            }else{
+              setRows(oldRows => {
+                return[
+                  ...oldRows.filter(row => row.id !== id)
+                ];
+              });
+              alert('Registro apagado com sucesso!');
+            }
+          });
+      }
+    };
 
-  const onNavigateEventOld = () =>{
-    window.location.replace('/events-old');
-  }
-
-  const onNavigateEventRegister = () =>{
-    window.location.replace('/events-register');
-  }
 
   
   return (
@@ -114,7 +121,7 @@ const ListStudent = () => {
                   <IconButton size="small">
                     <EditIcon />
                   </IconButton>
-                  <IconButton size="small">
+                  <IconButton size="small" onClick={() => handleDelete (row.id)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
