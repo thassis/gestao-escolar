@@ -8,7 +8,6 @@ import { Container, Column, RegisterButton } from "./styles";
 import { nextEvent } from "data-front/nextEvent";
 import { MenuList } from "data-front/data";
 
-
 const EventsAddPhotos = () => {
 
   const onNavigateEventsDescription = () =>{

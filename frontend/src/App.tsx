@@ -17,6 +17,7 @@ import EventsRegister from "pages/events-register/EventsRegister";
 import EventsDescription from "pages/events-description/EventsDescription";
 import EventsAddPhotos from "pages/events-add-photos/EventsAddPhotos";
 import ListStudent from "pages/student-list/ListStudent";
+import { AppRoutes } from "routes";
 
 let theme = createTheme({
   palette: {
@@ -37,21 +38,7 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-          <Routes>
-            <Route path="/">
-              <Route index element={<Login />} />
-              <Route path="home" element={<Home />} />
-              <Route path="register-student" element={<RegisterStudent />} />
-              <Route path="scheduled-events" element={<ScheduledEvents />} />
-              <Route path="events-next" element={<EventsNext />} />
-              <Route path="events-old" element={<EventsOld />} />
-              <Route path="events-register" element={<EventsRegister />} />
-              <Route path="events-description" element={<EventsDescription />} />
-              <Route path="events-add-photos" element={<EventsAddPhotos />} />
-              <Route path="student-list" element={<ListStudent />} />
-              <Route path="*" element={<NoPage />} />
-            </Route>
-          </Routes>
+          <AppRoutes />
         </BrowserRouter>
         <Footer />
       </ThemeProvider>
