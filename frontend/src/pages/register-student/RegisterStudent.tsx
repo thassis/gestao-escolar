@@ -1,14 +1,10 @@
 import React, { useState } from "react";
 
 import Header from "../../shared-components/header/Header";
-import { Container, Column, RegisterButton } from "./styles";
+import { Container, Column, RegisterButton, BodyRegisterButtonContainer } from "./styles";
 import {
-  InputLabel,
   MenuItem,
-  OutlinedInput,
-  Select,
   TextField,
-  TextFieldProps,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ClassShift } from "utils/enums";
@@ -134,9 +130,11 @@ const RegisterStudent = () => {
         </Column>
       </Container>
 
-      <RegisterButton variant="contained" onClick={() => onClickEnter()}>
-        Salvar Informações
-      </RegisterButton>
+      <BodyRegisterButtonContainer>
+        <RegisterButton variant="contained" onClick={() => onClickEnter()}>
+          Salvar Informações
+        </RegisterButton>
+      </BodyRegisterButtonContainer>
     </>
   );
 };
