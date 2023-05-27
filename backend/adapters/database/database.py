@@ -1,9 +1,9 @@
 """Database ORM models for SQLAlchemy."""
 
 from sqlalchemy import create_engine, Engine
-from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import sessionmaker, Session, relationship
 
 
 class DatabaseSession:
@@ -57,6 +57,27 @@ class ProfessorORM(Base):
     name = Column(String(100), nullable=False)
     email = Column(String(100), nullable=False, unique=True)
     password = Column(String(100), nullable=False)
+
+
+class PeriodoLetivoORM(Base):
+    """PeriodoLetivo ORM class for SQLAlchemy."""
+    __tablename__ = 'periodo_letivo'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    start_date = Column(Date, nullable=False)
+    end_date = Column(Date, nullable=False)
+    class_shift = Column(String(100), nullable=False)
+    dias_sem_aula = relationship("DiaSemAulaORM", backref="periodo_letivo")
+
+
+class DiaSemAulaORM(Base):
+    """DiaSemAula ORM class for SQLAlchemy."""
+    __tablename__ = 'dia_sem_aula'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    periodo_letivo_id = Column(Integer, ForeignKey('periodo_letivo.id'), nullable=False)
+    date = Column(Date, nullable=False)
+    reason = Column(String(100), nullable=False)
 
 
 def create_tables(engine: Engine):
@@ -127,4 +148,75 @@ def delete_all_professors(engine: Engine):
 
     # Delete all professors
     session.query(ProfessorORM).delete()
+    session.commit()
+
+
+def create_some_periodos_letivos(engine: Engine):
+    """Creates some PeriodoLetivo objects and saves them to the database."""
+    session_maker = sessionmaker(bind=engine)
+    session = session_maker()
+
+    new_periodo_letivo = PeriodoLetivoORM(start_date='2023-01-01',
+                                          end_date='2023-06-30',
+                                          class_shift='Morning')
+    session.add(new_periodo_letivo)
+    session.commit()
+
+    # Insert a new periodo letivo with a different class shift
+    new_periodo_letivo = PeriodoLetivoORM(start_date='2023-01-01',
+                                          end_date='2023-06-30',
+                                          class_shift='Afternoon')
+    session.add(new_periodo_letivo)
+    session.commit()
+
+
+def create_some_dias_sem_aula(engine: Engine):
+    """Creates some DiaSemAula objects and saves them to the database."""
+    session_maker = sessionmaker(bind=engine)
+    session = session_maker()
+
+    new_dia_sem_aula = DiaSemAulaORM(periodo_letivo_id=1,
+                                     date='2023-01-01',
+                                     reason='Feriado')
+    session.add(new_dia_sem_aula)
+    session.commit()
+
+    # Insert a new dia sem aula with a different reason
+    new_dia_sem_aula = DiaSemAulaORM(periodo_letivo_id=1,
+                                     date='2023-01-02',
+                                     reason='Feriado')
+    session.add(new_dia_sem_aula)
+    session.commit()
+
+    # Insert a new dia sem aula with a different date
+    new_dia_sem_aula = DiaSemAulaORM(periodo_letivo_id=1,
+                                     date='2023-01-03',
+                                     reason='Feriado')
+    session.add(new_dia_sem_aula)
+    session.commit()
+
+    # Insert a new dia sem aula with a different periodo letivo
+    new_dia_sem_aula = DiaSemAulaORM(periodo_letivo_id=2,
+                                     date='2023-01-01',
+                                     reason='Feriado')
+    session.add(new_dia_sem_aula)
+    session.commit()
+
+
+def delete_all_periodos_letivos(engine: Engine):
+    """Deletes all PeriodoLetivo objects from the database."""
+    session_maker = sessionmaker(bind=engine)
+    session = session_maker()
+
+    # Delete all periodos letivos
+    session.query(PeriodoLetivoORM).delete()
+    session.commit()
+
+def delete_all_dias_sem_aula(engine: Engine):
+    """Deletes all DiaSemAula objects from the database."""
+    session_maker = sessionmaker(bind=engine)
+    session = session_maker()
+
+    # Delete all dias sem aula
+    session.query(DiaSemAulaORM).delete()
     session.commit()
