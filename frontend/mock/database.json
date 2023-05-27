@@ -71,6 +71,24 @@
       "tutor_name": "Ricardo Santos",
       "tutor_phone": "11 2222-1111",
       "class_shift": "Tarde"
+    },
+    {
+      "id": 9,
+      "name": "Felipe Ferreira",
+      "born_date": "2003-11-03",
+      "address": "Rua Jose tomaz 21 bairro São Jose",
+      "tutor_name": "João Gomez",
+      "tutor_phone": "31 99998888",
+      "class_shift": "3"
+    },
+    {
+      "id": 10,
+      "name": "Ze Delivery",
+      "born_date": "",
+      "address": "Rua Dos Principes 21 - Bairro Estudantiu",
+      "tutor_name": "Marilia Gabriela",
+      "tutor_phone": "31 44445555",
+      "class_shift": "1"
     }
   ]
 }

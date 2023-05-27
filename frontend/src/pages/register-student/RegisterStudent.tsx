@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Header from "../../shared-components/header/Header";
 import { Container, Column, RegisterButton, BodyRegisterButtonContainer } from "./styles";
@@ -6,29 +6,24 @@ import {
   MenuItem,
   TextField,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ClassShift } from "utils/enums";
+import { AlunosServices } from "services/alunos/AlunosServices";
 
 const RegisterStudent = () => {
   const navigate = useNavigate();
 
-  const [fullName, setFullName] = useState("");
   const [errorFullName, setErrorFullName] = useState(false);
 
-  const [dataNascimento, setDataNascimento] = useState("");
   const [errorDataNascimento, setErrorDataNascimento] = useState(false);
 
-  const [address, setAddress] = useState("");
   const [errorAddress, setErrorAddress] = useState(false);
 
-  const [responsibleTeacher, setResponsibleTeacher] = useState("");
   const [errorResponsibleTeacher, setErrorResponsibleTeacher] = useState(false);
 
-  const [phoneResponsibleTeacher, setPhoneResponsibleTeacher] = useState("");
   const [errorPhoneResponsibleTeacher, setErrorPhoneResponsibleTeacher] =
     useState(false);
 
-  const [shift, setShift] = useState<ClassShift>();
   const [errorShift, setErrorShift] = useState(true);
 
   const updateErrorInputs = () => {
@@ -44,12 +39,55 @@ const RegisterStudent = () => {
     // }
   };
 
-  const onClickEnter = () => {
-    updateErrorInputs();
+  const { id } = useParams<'id'>();
+  const [fullName, setFullName] = useState("");
+  const [dataNascimento, setDataNascimento] = useState("");
+  const [address, setAddress] = useState("");
+  const [responsibleTeacher, setResponsibleTeacher] = useState("");
+  const [phoneResponsibleTeacher, setPhoneResponsibleTeacher] = useState("");
+  const [shift, setShift] = useState<ClassShift>();
 
-    // if (email && password) {
-    //   navigate("home");
-    // }
+  useEffect(() => {
+    if (id !== undefined) {
+
+      AlunosServices.getById(Number(id))
+        .then((result) => {
+          if(result instanceof Error) {
+            alert(result.message);
+            navigate('/home');
+          } else {
+            setFullName(result.name);
+            setDataNascimento(result.born_date);
+            setAddress(result.address);
+            setResponsibleTeacher(result.tutor_name);
+            setPhoneResponsibleTeacher(result.tutor_phone);
+            setShift(() => result.class_shift as ClassShift | undefined);
+          }
+        });
+    }
+  }, [id]);
+
+  const handleSave = () => {
+    // Construa um objeto com as informações dos campos
+    const updatedData = {
+      id: Number(id),
+      name: fullName,
+      born_date: dataNascimento,
+      address: address,
+      tutor_name: responsibleTeacher,
+      tutor_phone: phoneResponsibleTeacher,
+      class_shift: shift ? shift.toString() : ''
+    };
+  
+    // Chame o serviço para atualizar os dados
+    AlunosServices.create(updatedData)
+      .then((result) => {
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          navigate('/home');
+        }
+      });
   };
 
   return (
@@ -131,7 +169,7 @@ const RegisterStudent = () => {
       </Container>
 
       <BodyRegisterButtonContainer>
-        <RegisterButton variant="contained" onClick={() => onClickEnter()}>
+        <RegisterButton variant="contained" onClick={handleSave}>
           Salvar Informações
         </RegisterButton>
       </BodyRegisterButtonContainer>
