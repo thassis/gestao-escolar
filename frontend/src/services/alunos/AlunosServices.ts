@@ -4,14 +4,23 @@ import { Api } from '../axios-config';
 export interface IListagemALunos {
     id: number;
     name: string;
+    born_date: string;
+    address: string;
+    tutor_name: string;
+    tutor_phone: string;
     class_shift: string;
 }
 
 export interface IDetalheAlunos {
     id: number;
     name: string;
+    born_date: string;
+    address: string;
+    tutor_name: string;
+    tutor_phone: string;
     class_shift: string;
 }
+
 //Irá tipar nossos dados
 type TPessoasComTotalCount = {
     data: IListagemALunos[];

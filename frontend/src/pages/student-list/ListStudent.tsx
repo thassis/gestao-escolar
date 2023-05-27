@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Box } from '@mui/system';
-import { useSearchParams } from "react-router-dom";
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate, useSearchParams } from "react-router-dom";
+
 import { 
   IconButton, 
   Pagination, 
@@ -19,10 +20,10 @@ import {
   Typography
 } from "@mui/material";
 
-import Header from "shared-components/header/Header";import { AlunosServices, IListagemALunos } from "services/alunos/AlunosServices";
+import { BoxList, PaperList } from "./styles";
 import { useDebounce } from "shared-components/hooks";
 import { Environment } from "shared-components/environment";
-import { BoxList, PaperList } from "./styles";
+import Header from "shared-components/header/Header";import { AlunosServices, IListagemALunos } from "services/alunos/AlunosServices";
 ;
 
 const ListStudent = () => {
@@ -31,6 +32,7 @@ const ListStudent = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [rows, setRows] = useState<IListagemALunos[]>([]);
   const { debounce } = useDebounce();
+  const navigate = useNavigate();
 
   const busca = useMemo(() => {
     return searchParams.get('busca') || '';
@@ -109,8 +111,11 @@ const ListStudent = () => {
               <TableRow>
                 <TableCell width={100}>Editar/Excluir</TableCell>
                 <TableCell >Nome dos Alunos</TableCell>
-                <TableCell>Turma</TableCell>
-                <TableCell>Informações</TableCell>
+                <TableCell>Data de Nascimento</TableCell>
+                <TableCell>Endereço</TableCell>
+                <TableCell>Nome do tutor</TableCell>
+                <TableCell>Telefone do tutor</TableCell>
+                <TableCell>Turno de aula</TableCell>
               </TableRow>
             </TableHead>
     
@@ -118,7 +123,7 @@ const ListStudent = () => {
               {rows.map(row => (  
                 <TableRow data-testid="student-row">
                 <TableCell>
-                  <IconButton size="small">
+                  <IconButton size="small" onClick={() => navigate(`/student-list/edit/${row.id}`)}>
                     <EditIcon />
                   </IconButton>
                   <IconButton size="small" onClick={() => handleDelete (row.id)}>
@@ -126,8 +131,11 @@ const ListStudent = () => {
                   </IconButton>
                 </TableCell>
                 <TableCell>{row.name}</TableCell>
+                <TableCell>{row.born_date}</TableCell>
+                <TableCell>{row.address}</TableCell>
+                <TableCell>{row.tutor_name}</TableCell>
+                <TableCell>{row.tutor_phone}</TableCell>
                 <TableCell>{row.class_shift}</TableCell>
-                <TableCell>Inglês básico</TableCell>
               </TableRow>
               ))}
             </TableBody>
