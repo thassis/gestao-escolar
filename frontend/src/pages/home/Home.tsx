@@ -16,7 +16,7 @@ const Home = () => {
   }
 
   const onNavigatePresenca = () =>{
-    window.location.replace('/lista-de-presenca');
+    window.location.replace('/attendance-list');
   }
 
   const onNavigateRelatorio = () =>{

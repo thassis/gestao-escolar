@@ -11,6 +11,8 @@ import ScheduledEvents from "pages/scheduled-events/ScheduledEvents";
 import ListStudent from "pages/student-list/ListStudent";
 import EditRegisterStudent from "pages/student-list/EditRegisterStudent";
 import { Route, Routes } from "react-router-dom"
+import AttendanceList from "pages/presential-list/AttendanceList";
+
 
 export const AppRoutes = () => {
   
@@ -28,6 +30,7 @@ export const AppRoutes = () => {
               <Route path="events-add-photos" element={<EventsAddPhotos />} />
               <Route path="student-list" element={<ListStudent />} />
               <Route path="student-list/edit/:id" element={<EditRegisterStudent />} />
+              <Route path="attendance-list" element={<AttendanceList />} />
               <Route path="*" element={<NoPage />} />
             </Route>
           </Routes>
