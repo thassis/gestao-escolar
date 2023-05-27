@@ -6,7 +6,7 @@ services:
     image: postgres:14-alpine
     ports:
       # <Port exposed>:<Port running inside container>
-      - '5450:5432'
+      - '5450:5450'
 
     environment:
       - POSTGRES_PASSWORD=postgres

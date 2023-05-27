@@ -16,7 +16,7 @@ class DatabaseSession:
         """Initializes the database engine and session."""
         # postgresql://<username>:<password>@<host>:<port>/<database_name>
         self.engine = create_engine(
-            'postgresql://postgres:postgres@localhost:5450/postgres',
+            'postgresql://postgres:postgres@172.18.0.2:5432/postgres',
             echo=True)
 
         self.db_session = Session(bind=self.engine)
