@@ -161,3 +161,25 @@ class AlunoService:
             alunos_dict['Aluno'].append(aluno.__dict__)
 
         return alunos_dict
+
+    def get_alunos_paginated(self, offset, limit, name_like):
+        """Retrieves a paginated list of existing Aluno objects from the
+        repository. Returns a dictionary of alunos, where every aluno object
+        is a dictionary itself.\\
+        Args:
+            offset (int): The offset of the query.
+            limit (int): The limit of the query.
+            name_like (str): A string to be used in the query to search for
+                alunos with a similar name.
+        Returns:
+            alunos_dict (dict): A dictionary of alunos.
+        """
+        alunos = self.aluno_repository.get_alunos_paginated(offset, limit, name_like)
+
+        # get all alunos and change it to a dictionary of alunos
+        alunos_dict = {'Aluno': []}
+        if alunos is not None:
+            for aluno in alunos:
+                alunos_dict['Aluno'].append(aluno.__dict__)
+
+        return alunos_dict

@@ -36,6 +36,12 @@ class AlunoController:
         """Retrieves a list of all Aluno objects from the repository."""
         return self.aluno_service.get_all_alunos()
 
+    def get_alunos_paginated(self, offset, limit, name_like):
+        """Retrieves a list of Aluno objects from the repository
+        in a paginated way.
+        """
+        return self.aluno_service.get_alunos_paginated(offset, limit, name_like)
+
     def create(self, name, born_date, address, tutor_name,
                     tutor_phone, class_shift):
         """Creates a new Aluno object and saves it to the repository."""

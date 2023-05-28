@@ -102,6 +102,25 @@ def get_all_alunos() -> tuple:
     return jsonify(data), 200
 
 
+@app.route('/aluno', methods=['GET'])
+def get_aluno_paginated() -> tuple:
+    """Get alunos from the database paginated.\\
+    Returns:
+        A tuple containing the data and a status code.
+    """
+    page = request.args.get('page', 1, type=int)
+    limit = request.args.get('_limit', 10, type=int)
+    name_like = request.args.get('name_like', '', type=str)
+    offset = (page - 1) * limit
+
+    alunos = AlunoController().get_alunos_paginated(offset, limit, name_like)
+
+    if not alunos:
+        return jsonify({"error": "There are no alunos in the database"}), 400
+
+    return jsonify(alunos), 200
+
+
 ####                                                   ####
 #       Implementação das rotas para os professores       #
 ####                                                   ####
