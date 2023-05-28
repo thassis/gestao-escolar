@@ -77,15 +77,19 @@ def get_alunos(name) -> tuple:
 Implementação das rotas para os professores
 """
 
-@app.route("/login/<email>/<password>", methods=['GET'])
-def login(email, password) -> tuple:
+@app.route("/login", methods=['POST'])
+def login() -> tuple:
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+    print(f'recebido no flask: {email}, {password}') # TODO: remove this
     if not email or not password:
         return jsonify({"error":"Invalid data"}), 400
-    
+
     response = ProfessorController().login(email, password)
     if not response:
-        return jsonify({"error":"Invalid credentials"}), 200
-    
+        return jsonify({"error":"Invalid email or password"}), 401
+
     return jsonify(response), 200
 
 app.route("/create/professor", methods=['POST'])

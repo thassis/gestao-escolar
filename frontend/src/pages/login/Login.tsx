@@ -13,6 +13,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errorPassword, setErrorPassword] = useState(false);
 
+  const [error, setError] = useState('');
+
   const updateErrorInputs = () => {
     if (!email) {
       setErrorEmail(true);
@@ -29,21 +31,27 @@ const Login = () => {
 
   const onClickEnter = () => {
     updateErrorInputs();
-  
+
     if (email && password) {
-      fetch(`http://127.0.0.1:8000/login/${email}/${password}`) // TODO: (Frontend/Backend) Ideally, this should be a POST
-        .then(response => {                                     // TODO2: (Frontend/Backend) Probably it'd be better to not use localhost network to access the backend api
+      fetch('http://127.0.0.1:8000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      })
+        .then(response => {
           if (response.ok) {
             navigate('home');
-          } else if (response.status === 401) {
-            console.log('Invalid credentials'); // TODO: improve code
           } else {
-            console.log('An error occurred'); // TODO: improve code
+            response.json().then(data => {
+              setError(data.error || 'An error occurred');
+            });
           }
         })
         .catch(error => {
-          console.log('An error occurred'); // TODO: improve code
-          console.log(error); // TODO: improve code
+          setError('An error occurred');
+          console.log(error);
         });
     }
   };
@@ -73,6 +81,8 @@ const Login = () => {
           helperText={errorPassword ? "Campo obrigatório" : ""}
           inputProps={{ "aria-label": "password-helper-text" }}
         />
+
+        {error && <p>{error}</p>}
 
         <LoginButton variant="contained" onClick={() => onClickEnter()}>
           Entrar
