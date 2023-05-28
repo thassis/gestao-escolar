@@ -90,46 +90,55 @@ def create_some_alunos(engine: Engine):
     session_maker = sessionmaker(bind=engine)
     session = session_maker()
 
-    new_aluno = AlunoORM(name='John Doe', born_date='2000-01-01',
-                         address='123 Main St', tutor_name='Jane Doe',
-                         tutor_phone='555-555-5555', class_shift='Morning')
-    session.add(new_aluno)
-    session.commit()
+    aluno_list = [
+        {'name': 'João Silva', 'born_date': '2000-01-01',
+         'address': 'Rua Principal, 123', 'tutor_name': 'Maria Silva',
+         'tutor_phone': '(11) 5555-5555', 'class_shift': 'Manhã'},
+        {'name': 'Maria Silva', 'born_date': '2001-02-02',
+         'address': 'Rua das Flores, 456', 'tutor_name': 'João Silva',
+         'tutor_phone': '(11) 5555-5555', 'class_shift': 'Tarde'},
+        {'name': 'Roberto Santos', 'born_date': '2002-03-03',
+         'address': 'Rua dos Pinheiros, 789', 'tutor_name': 'Alice Santos',
+         'tutor_phone': '(11) 5555-5555', 'class_shift': 'Manhã'},
+        {'name': 'Samantha Oliveira', 'born_date': '2003-04-04',
+         'address': 'Rua das Palmeiras, 321', 'tutor_name': 'Miguel Oliveira',
+         'tutor_phone': '(11) 5555-5555', 'class_shift': 'Tarde'}
+    ]
 
-    # Insert a new student with a different class shift
-    new_aluno = AlunoORM(name='Jane Doe', born_date='2001-02-02',
-                         address='456 Elm St', tutor_name='John Doe',
-                         tutor_phone='555-555-5555', class_shift='Afternoon')
-    session.add(new_aluno)
-    session.commit()
+    for aluno in aluno_list:
+        new_aluno = AlunoORM(name=aluno['name'], born_date=aluno['born_date'],
+                             address=aluno['address'], tutor_name=aluno['tutor_name'],
+                             tutor_phone=aluno['tutor_phone'], class_shift=aluno['class_shift'])
 
-    # Insert a new student with a different tutor
-    new_aluno = AlunoORM(name='Bob Smith', born_date='2002-03-03',
-                         address='789 Oak St', tutor_name='Alice Smith',
-                         tutor_phone='555-555-5555', class_shift='Morning')
-    session.add(new_aluno)
-    session.commit()
+        existing_aluno = session.query(AlunoORM).filter_by(name=new_aluno.name, born_date=new_aluno.born_date).first()
+        if existing_aluno: # avoid duplicates and errors for existing data
+            continue
 
-    # Insert a new student with a different address
-    new_aluno = AlunoORM(name='Samantha Johnson', born_date='2003-04-04',
-                         address='321 Pine St', tutor_name='Mike Johnson',
-                         tutor_phone='555-555-5555', class_shift='Afternoon')
-    session.add(new_aluno)
-    session.commit()
+        # Insert a new student
+        session.add(new_aluno)
+        session.commit()
 
 
-def create_a_professor(engine: Engine):
-    """Creates a Professor object and saves it to the database."""
+def create_some_professor(engine: Engine):
+    """Creates some Professor objects and saves it to the database."""
     session_maker = sessionmaker(bind=engine)
     session = session_maker()
+    professor_list = [
+        {'name': 'William', 'email': 'william@bhzconnection.org.br',
+        'password': 'password123'}
+    ]
+    for professor in professor_list:
+        new_professor = ProfessorORM(name=professor['name'],
+                                     email=professor['email'],
+                                     password=professor['password'])
 
-    # Insert a new professor
-    new_professor = ProfessorORM(name='Oscar Smith',
-                                 email='oscar.smith@example.com',
-                                 password='password123')
-    session.add(new_professor)
-    session.commit()
+        existing_professor = session.query(ProfessorORM).filter_by(email=new_professor.email).first()
+        if existing_professor: # avoid duplicates and errors for existing data
+            continue
 
+        # Insert a new professor
+        session.add(new_professor)
+        session.commit()
 
 def delete_all_alunos(engine: Engine):
     """Deletes all Aluno objects from the database."""
@@ -156,18 +165,23 @@ def create_some_periodos_letivos(engine: Engine):
     session_maker = sessionmaker(bind=engine)
     session = session_maker()
 
-    new_periodo_letivo = PeriodoLetivoORM(start_date='2023-01-01',
-                                          end_date='2023-06-30',
-                                          class_shift='Morning')
-    session.add(new_periodo_letivo)
-    session.commit()
+    periodo_letivo_list = [
+        {'start_date': '2023-01-01', 'end_date': '2023-06-30', 'class_shift': 'Manhã'},
+        {'start_date': '2023-01-01', 'end_date': '2023-06-30', 'class_shift': 'Tarde'}
+    ]
 
-    # Insert a new periodo letivo with a different class shift
-    new_periodo_letivo = PeriodoLetivoORM(start_date='2023-01-01',
-                                          end_date='2023-06-30',
-                                          class_shift='Afternoon')
-    session.add(new_periodo_letivo)
-    session.commit()
+    for periodo_letivo in periodo_letivo_list:
+        new_periodo_letivo = PeriodoLetivoORM(start_date=periodo_letivo['start_date'],
+                                              end_date=periodo_letivo['end_date'],
+                                              class_shift=periodo_letivo['class_shift'])
+
+        existing_periodo_letivo = session.query(PeriodoLetivoORM).filter_by(start_date=new_periodo_letivo.start_date, end_date=new_periodo_letivo.end_date).first()
+        if existing_periodo_letivo: # avoid duplicates and errors for existing data
+            continue
+
+        # Insert a new periodo letivo
+        session.add(new_periodo_letivo)
+        session.commit()
 
 
 def create_some_dias_sem_aula(engine: Engine):
@@ -175,32 +189,25 @@ def create_some_dias_sem_aula(engine: Engine):
     session_maker = sessionmaker(bind=engine)
     session = session_maker()
 
-    new_dia_sem_aula = DiaSemAulaORM(periodo_letivo_id=1,
-                                     date='2023-01-01',
-                                     reason='Feriado')
-    session.add(new_dia_sem_aula)
-    session.commit()
+    dia_sem_aula_list = [
+        {'periodo_letivo_id': 1, 'date': '2023-01-01', 'reason': 'Feriado'},
+        {'periodo_letivo_id': 1, 'date': '2023-01-02', 'reason': 'Feriado'},
+        {'periodo_letivo_id': 1, 'date': '2023-01-03', 'reason': 'Feriado'},
+        {'periodo_letivo_id': 2, 'date': '2023-01-01', 'reason': 'Feriado'}
+    ]
 
-    # Insert a new dia sem aula with a different reason
-    new_dia_sem_aula = DiaSemAulaORM(periodo_letivo_id=1,
-                                     date='2023-01-02',
-                                     reason='Feriado')
-    session.add(new_dia_sem_aula)
-    session.commit()
+    for dia_sem_aula in dia_sem_aula_list:
+        new_dia_sem_aula = DiaSemAulaORM(periodo_letivo_id=dia_sem_aula['periodo_letivo_id'],
+                                        date=dia_sem_aula['date'],
+                                        reason=dia_sem_aula['reason'])
 
-    # Insert a new dia sem aula with a different date
-    new_dia_sem_aula = DiaSemAulaORM(periodo_letivo_id=1,
-                                     date='2023-01-03',
-                                     reason='Feriado')
-    session.add(new_dia_sem_aula)
-    session.commit()
+        existing_dia_sem_aula = session.query(DiaSemAulaORM).filter_by(periodo_letivo_id=new_dia_sem_aula.periodo_letivo_id, date=new_dia_sem_aula.date, reason=new_dia_sem_aula.reason).first()
+        if existing_dia_sem_aula: # avoid duplicates and errors for existing data
+            continue
 
-    # Insert a new dia sem aula with a different periodo letivo
-    new_dia_sem_aula = DiaSemAulaORM(periodo_letivo_id=2,
-                                     date='2023-01-01',
-                                     reason='Feriado')
-    session.add(new_dia_sem_aula)
-    session.commit()
+        # Insert a new dia sem aula
+        session.add(new_dia_sem_aula)
+        session.commit()
 
 
 def delete_all_periodos_letivos(engine: Engine):
