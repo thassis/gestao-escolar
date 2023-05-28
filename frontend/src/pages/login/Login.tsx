@@ -29,9 +29,22 @@ const Login = () => {
 
   const onClickEnter = () => {
     updateErrorInputs();
-
+  
     if (email && password) {
-      navigate("home");
+      fetch(`http://127.0.0.1:8000/login/${email}/${password}`) // TODO: (Frontend/Backend) Ideally, this should be a POST
+        .then(response => {                                     // TODO2: (Frontend/Backend) Probably it'd be better to not use localhost network to access the backend api
+          if (response.ok) {
+            navigate('home');
+          } else if (response.status === 401) {
+            console.log('Invalid credentials'); // TODO: improve code
+          } else {
+            console.log('An error occurred'); // TODO: improve code
+          }
+        })
+        .catch(error => {
+          console.log('An error occurred'); // TODO: improve code
+          console.log(error); // TODO: improve code
+        });
     }
   };
 
