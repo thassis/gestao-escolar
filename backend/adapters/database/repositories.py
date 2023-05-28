@@ -191,3 +191,16 @@ class AlunoRepositoryPostgres(AlunoRepository):
         if alunos is None:
             return []
         return alunos
+
+
+    def get_all_alunos(self) -> list[Aluno]:
+        """Retrieves all Aluno objects from the database. If the retrieval
+        fails, an empty list is returned.\\
+        Returns:
+            list[Aluno]: List of Aluno objects.
+        """
+        alunos_orm = self.database.query(AlunoORM).all()
+        alunos = [AlunoORM.to_aluno(aluno) for aluno in alunos_orm]
+        if alunos is None:
+            return []
+        return alunos

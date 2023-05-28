@@ -32,6 +32,9 @@ class AlunoController:
         return self.aluno_service.get_alunos_by_name(name)
         # return True
 
+    def get_all_alunos(self):
+        """Retrieves a list of all Aluno objects from the repository."""
+        return self.aluno_service.get_all_alunos()
 
     def create(self, name, born_date, address, tutor_name,
                     tutor_phone, class_shift):

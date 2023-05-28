@@ -62,3 +62,8 @@ class AlunoRepository(ABC):
     def get_by_name(self, aluno_name: str) -> list[Aluno]:
         """Retrieves an Aluno object from the repository by its name."""
         pass
+
+    @abstractmethod
+    def get_all_alunos(self) -> list[Aluno]:
+        """Retrieves all Aluno objects from the repository."""
+        pass

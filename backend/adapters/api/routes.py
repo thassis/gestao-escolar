@@ -89,6 +89,18 @@ def get_alunos(name) -> tuple:
     return jsonify(data), 200
 
 
+@app.route("/all_alunos/", methods=['GET'])
+def get_all_alunos() -> tuple:
+    """Get all alunos from the database.\\
+    Returns:
+        A tuple containing the data and a status code.
+    """
+    data = AlunoController().get_all_alunos()
+    if not data:
+        return jsonify({"error": "There are no alunos in the database"}), 400
+
+    return jsonify(data), 200
+
 
 ####                                                   ####
 #       Implementação das rotas para os professores       #

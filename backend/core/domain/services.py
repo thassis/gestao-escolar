@@ -145,3 +145,19 @@ class AlunoService:
             alunos_dict['Aluno'].append(aluno.__dict__)
 
         return alunos_dict
+
+    def get_all_alunos(self) -> dict:
+        """Retrieves all existing Aluno objects from the repository.
+        Returns a dictionary of alunos, where every aluno object is a
+        dictionary itself.\\
+        Returns:
+            alunos_dict (dict): A dictionary of alunos.
+        """
+        alunos = self.aluno_repository.get_all_alunos()
+
+        # get all alunos and change it to a dictionary of alunos
+        alunos_dict = {'Aluno': []}
+        for aluno in alunos:
+            alunos_dict['Aluno'].append(aluno.__dict__)
+
+        return alunos_dict
