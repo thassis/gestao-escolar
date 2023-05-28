@@ -5,6 +5,10 @@ from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session, relationship
 
+import sys
+sys.path.append('../../../')
+
+from backend.core.domain.models import Aluno
 
 class DatabaseSession:
     """Database session class for SQLAlchemy. It creates a database engine
@@ -58,6 +62,19 @@ class AlunoORM(Base):
             tutor_name=aluno.tutor_name,
             tutor_phone=aluno.tutor_phone,
             class_shift=aluno.class_shift
+        )
+
+    @staticmethod
+    def to_aluno(aluno_orm):
+        """Converts an AlunoORM object to an Aluno object."""
+        return Aluno(
+            id=aluno_orm.id,
+            name=aluno_orm.name,
+            born_date=aluno_orm.born_date,
+            address=aluno_orm.address,
+            tutor_name=aluno_orm.tutor_name,
+            tutor_phone=aluno_orm.tutor_phone,
+            class_shift=aluno_orm.class_shift
         )
 
 

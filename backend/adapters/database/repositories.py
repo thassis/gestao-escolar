@@ -186,7 +186,8 @@ class AlunoRepositoryPostgres(AlunoRepository):
         Returns:
             list[Aluno]: List of Aluno objects.
         """
-        alunos = self.database.query(Aluno).filter(column('name') == aluno_name).all()
+        alunos = self.database.query(AlunoORM).filter(column('name') == aluno_name).all()
+        alunos = [AlunoORM.to_aluno(aluno) for aluno in alunos]
         if alunos is None:
             return []
         return alunos

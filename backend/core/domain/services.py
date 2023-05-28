@@ -125,7 +125,7 @@ class AlunoService:
     def get_alunos_by_name(self, aluno_name: str) -> dict:
         """Retrieves one or more existing Aluno object from the repository.
         Returns a dictionary of alunos, where every aluno object is a
-
+        dictionary itself.\\
         Args:
             aluno_name (str): The name of the aluno to be retrieved.
         Returns:
