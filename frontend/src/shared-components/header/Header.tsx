@@ -61,12 +61,12 @@ const Header = () => {
           onClick={toggleDrawerOpen}
         />
         <ListItemLink 
-          to="/home" 
+          to="/attendance-list" 
           label={"Presenca"} 
           onClick={toggleDrawerOpen}
         />
         <ListItemLink 
-          to="/home" 
+          to="/attendance-report" 
           label={"Relatorio"} 
           onClick={toggleDrawerOpen}
         />

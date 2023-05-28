@@ -12,7 +12,7 @@ import ListStudent from "pages/student-list/ListStudent";
 import EditRegisterStudent from "pages/student-list/EditRegisterStudent";
 import { Route, Routes } from "react-router-dom"
 import AttendanceList from "pages/presential-list/AttendanceList";
-
+import AttendanceReport from "pages/attendance-report/AttendanceReport";
 
 export const AppRoutes = () => {
   
@@ -31,6 +31,7 @@ export const AppRoutes = () => {
               <Route path="student-list" element={<ListStudent />} />
               <Route path="student-list/edit/:id" element={<EditRegisterStudent />} />
               <Route path="attendance-list" element={<AttendanceList />} />
+              <Route path="attendance-report" element={<AttendanceReport />} />
               <Route path="*" element={<NoPage />} />
             </Route>
           </Routes>
