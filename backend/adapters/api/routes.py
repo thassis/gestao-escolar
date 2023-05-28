@@ -40,34 +40,43 @@ def create_aluno() -> tuple:
 
 @app.route("/update/aluno", methods=['POST'])
 def update_aluno() -> tuple:
+    """Update an existing aluno.\\
+    Returns:
+        A tuple containing the updated data and a status code.
+    """
     data = request.get_json()
     if not data.get('id'):
         return jsonify({'error': 'ID not given'}), 400
-    
-    id = data.get('id')
+
+    aluno_id = data.get('id')
     name = data.get('name')
     born_date = data.get('born_date')
     address = data.get("address")
     tutor_name = data.get("tutor_name")
     tutor_phone = data.get("tutor_phone")
     class_shift = data.get("class_shift")
-    
-    response = AlunoController().update(id, name, born_date, address, tutor_name, tutor_phone, class_shift)
+
+    response = AlunoController().update(aluno_id, name, born_date, address,
+                                        tutor_name, tutor_phone, class_shift)
     if not response:
-        return jsonify({"error":"Invalid credentials"}), 200
+        return jsonify({"error":"Invalid credentials"}), 400
 
     return data, 200
 
 @app.route("/delete/aluno", methods=['POST'])
 def delete_aluno() -> tuple:
+    """Delete an existing aluno.\\
+    Returns:
+        A tuple containing the deleted data and a status code.
+    """
     data = request.get_json()
     if not data.get('id'):
         return jsonify({'error': 'Invalid data'}), 400
-    id = data.get('id')
-    
-    response = AlunoController().remove(id)
+    aluno_id = data.get('id')
+
+    response = AlunoController().remove(aluno_id)
     if not response:
-        return jsonify({"error":"Invalid credentials"}), 200
+        return jsonify({"error":"Invalid credentials"}), 400
     return data, 200
 
 

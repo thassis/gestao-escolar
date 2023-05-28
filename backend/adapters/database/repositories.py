@@ -154,7 +154,7 @@ class AlunoRepositoryPostgres(AlunoRepository):
             Aluno | str: Aluno object if the retrieval is successful. Otherwise,
                 returns an error message.
         """
-        aluno = self.database.query(Aluno).filter_by(id=aluno_id).first()
+        aluno = self.database.query(AlunoORM).filter_by(id=aluno_id).first()
         if aluno is None:
             return f"Aluno with ID {aluno_id} not found"
         return aluno

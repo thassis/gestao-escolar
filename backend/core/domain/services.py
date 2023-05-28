@@ -91,7 +91,9 @@ class AlunoService:
             tutor_phone=tutor_phone,
             class_shift=class_shift
         )
-        self.aluno_repository.save(aluno)
+        aluno = self.aluno_repository.save(aluno)
+        if isinstance(aluno, str): # if aluno is not found
+            return aluno
         return aluno
 
 
@@ -100,6 +102,9 @@ class AlunoService:
                         class_shift=None):
         """Updates an existing Aluno object and saves it to the repository."""
         aluno = self.aluno_repository.get_by_id(aluno_id)
+        if isinstance(aluno, str): # if aluno is not found
+            return aluno
+
         if name is not None:
             aluno.name = name
         if born_date is not None:
@@ -119,7 +124,8 @@ class AlunoService:
     def remove_aluno(self, aluno_id):
         """Removes an existing Aluno object from the repository."""
         aluno = self.aluno_repository.get_by_id(aluno_id)
-        self.aluno_repository.delete(aluno)
+        message = self.aluno_repository.delete(aluno)
+        return message
 
 
     def get_alunos_by_name(self, aluno_name: str) -> dict:
