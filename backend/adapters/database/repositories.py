@@ -58,9 +58,10 @@ class ProfessorRepositoryPostgres(ProfessorRepository):
                 Otherwise, returns an error message.
         """
         try:
-            self.database.add(professor)
+            professor_orm = ProfessorORM.from_professor(professor)
+            self.database.add(professor_orm)
             self.database.commit()
-            self.database.refresh(professor)
+            self.database.refresh(professor_orm)
         except SQLAlchemyError as exception:
             error_message = f"An error occurred: {exception}"
             print(error_message) # TODO: Remove later
@@ -133,9 +134,10 @@ class AlunoRepositoryPostgres(AlunoRepository):
                 returns an error message.
         """
         try:
-            self.database.add(aluno)
+            aluno_orm = AlunoORM.from_aluno(aluno)
+            self.database.add(aluno_orm)
             self.database.commit()
-            self.database.refresh(aluno)
+            self.database.refresh(aluno_orm)
         except SQLAlchemyError as exception:
             error_message = f"An error occurred: {exception}"
             print(error_message) # TODO: Remove later

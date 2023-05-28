@@ -48,6 +48,18 @@ class AlunoORM(Base):
     tutor_phone = Column(String(20), nullable=False)
     class_shift = Column(String(20), nullable=False)
 
+    @staticmethod
+    def from_aluno(aluno):
+        """Converts an Aluno object to an AlunoORM object."""
+        return AlunoORM(
+            name=aluno.name,
+            born_date=aluno.born_date,
+            address=aluno.address,
+            tutor_name=aluno.tutor_name,
+            tutor_phone=aluno.tutor_phone,
+            class_shift=aluno.class_shift
+        )
+
 
 class ProfessorORM(Base):
     """Professor ORM class for SQLAlchemy."""
@@ -57,6 +69,15 @@ class ProfessorORM(Base):
     name = Column(String(100), nullable=False)
     email = Column(String(100), nullable=False, unique=True)
     password = Column(String(100), nullable=False)
+
+    @staticmethod
+    def from_professor(professor):
+        """Converts a Professor object to a ProfessorORM object."""
+        return ProfessorORM(
+            name=professor.name,
+            email=professor.email,
+            password=professor.password
+        )
 
 
 class PeriodoLetivoORM(Base):

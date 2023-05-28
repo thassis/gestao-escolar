@@ -10,25 +10,33 @@ app = Blueprint('routes', __name__)
 def index():
     return "Teste flask API"
 
-###Pode ser substituito por um único end point mas com diferentes requisições HTML
+####                                              ####
+#       Implementação das rotas para os alunos       #
+####                                              ####
 
 @app.route("/create/aluno", methods=['POST'])
 def create_aluno() -> tuple:
     data = request.get_json()
-    if not data:
-        return jsonify({'error': 'Invalid data'}), 400
-    name = data.get('name')
-    born_date = data.get('born_date')
-    address = data.get("address")
-    tutor_name = data.get("tutor_name")
-    tutor_phone = data.get("tutor_phone")
-    class_shift = data.get("class_shift")
-    
+
+    # Check if all required fields are present in the request data
+    required_fields = ["name", "born_date", "address", "tutor_name", "tutor_phone", "class_shift"]
+    if not data or not all(key in data for key in required_fields):
+        # Return an error response if any required field is missing
+        error_response = {'error':'Invalid data'}
+        return jsonify(error_response), 400
+
+    name = data["name"]
+    born_date = data["born_date"]
+    address = data["address"]
+    tutor_name = data["tutor_name"]
+    tutor_phone = data["tutor_phone"]
+    class_shift = data["class_shift"]
+
     response = AlunoController().create(name, born_date, address, tutor_name, tutor_phone, class_shift)
     if not response:
-        return jsonify({"error":"Invalid credentials"}), 200
-    
-    return data, 200
+        return jsonify({"error":"Invalid credentials"}), 400
+
+    return jsonify(data), 200
 
 @app.route("/update/aluno", methods=['POST'])
 def update_aluno() -> tuple:
@@ -73,9 +81,9 @@ def get_alunos(name) -> tuple:
 
 
 
-"""
-Implementação das rotas para os professores
-"""
+####                                                   ####
+#       Implementação das rotas para os professores       #
+####                                                   ####
 
 @app.route("/login", methods=['POST'])
 def login() -> tuple:
