@@ -13,8 +13,7 @@ services:
     volumes:
       - ./data/db:/var/lib/postgresql/data/
     networks:
-      my-network:
-        ipv4_address: 172.19.0.2
+      - my-network
 
   frontend:
     build:
