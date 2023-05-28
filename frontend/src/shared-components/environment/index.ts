@@ -13,6 +13,7 @@ export const Environment = {
     LISTAGEM_VAZIA: 'Nenhum registro encontrado.',
     /**
      * Define a URL base para a API
+     * http://localhost:3333
     */
-     URL_BASE: 'http://localhost:3333',
+     URL_BASE: 'http://backend:8000',
   };

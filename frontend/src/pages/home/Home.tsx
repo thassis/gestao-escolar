@@ -20,7 +20,7 @@ const Home = () => {
   }
 
   const onNavigateRelatorio = () =>{
-    window.location.replace('/relatorio-de-presenca');
+    window.location.replace('/attendance-report');
   }
 
   const onNavigateListStudent = () =>{

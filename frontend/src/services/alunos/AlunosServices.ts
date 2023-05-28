@@ -58,15 +58,17 @@ const getById = async (id: number): Promise<IDetalheAlunos | Error> => {
 };
 
 const create = async (dados: Omit<IDetalheAlunos, 'id'>): Promise<number | Error> => {
-  try{
-    const { data} = await Api.post<IDetalheAlunos>('/aluno', dados);
-
-    if(data){
+  try {
+    const response = await Api.post('http://127.0.0.1:8000/create/aluno', dados);
+    console.log('Aluno criado com sucesso:', response.data);
+    
+    if (response.status === 200) {
+      const { data } = response;
       return data.id;
     }
-    return new Error('Erro ao criar um regitro');
-  }catch(error){  
-    return new Error((error as {message:string}).message ||'Erro ao criar um regitro');
+    return new Error('Erro ao criar um registro');
+  } catch (error) {
+    return new Error((error as { message: string }).message || 'Erro ao criar um registro');
   }
 };
 
