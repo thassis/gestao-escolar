@@ -167,7 +167,6 @@ def create_some_periodos_letivos(engine: Engine):
 
     periodo_letivo_list = [
         {'start_date': '2023-01-01', 'end_date': '2023-06-30', 'class_shift': 'Manhã'},
-        {'start_date': '2023-01-01', 'end_date': '2023-06-30', 'class_shift': 'Tarde'}
     ]
 
     for periodo_letivo in periodo_letivo_list:
@@ -193,7 +192,6 @@ def create_some_dias_sem_aula(engine: Engine):
         {'periodo_letivo_id': 1, 'date': '2023-01-01', 'reason': 'Feriado'},
         {'periodo_letivo_id': 1, 'date': '2023-01-02', 'reason': 'Feriado'},
         {'periodo_letivo_id': 1, 'date': '2023-01-03', 'reason': 'Feriado'},
-        {'periodo_letivo_id': 2, 'date': '2023-01-01', 'reason': 'Feriado'}
     ]
 
     for dia_sem_aula in dia_sem_aula_list:
