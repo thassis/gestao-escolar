@@ -16,6 +16,7 @@ from backend.core.interfaces.repositories import(
     ProfessorRepository, AlunoRepository
 )
 
+from backend.adapters.database.database import ProfessorORM, AlunoORM
 
 class ProfessorRepositoryPostgres(ProfessorRepository):
     """Professor repository class for PostgreSQL implementation."""
@@ -25,19 +26,26 @@ class ProfessorRepositoryPostgres(ProfessorRepository):
         self.database = db
 
 
-    def verify_login(self, professor_email: str, professor_password: str) -> bool:
+    def verify_login(self, professor_email: str, professor_password: str) -> bool | str:
         """Verifies professor login credentials. It queries the database for
         a professor with the given email and checks if the password matches.\\
         Args:
             email (str): Professor's email.
             password (str): Professor's password.
         Returns:
-            bool: `True` if the credentials are valid. Otherwise, returns `False`.
+            bool | str: True if the credentials are valid. False if the
+                credentials are invalid. Otherwise, returns an error message.
         """
-        professor = self.database.query(Professor).filter_by(email=professor_email).first()
-        if professor is None:
+        try:
+            professor_object = self.database.query(ProfessorORM).filter_by(email=professor_email).first()
+        except SQLAlchemyError as exception:
+            error_message = f"An error occurred: {exception}"
+            print(error_message)
+            return error_message
+        if professor_object is None:
             return False
-        return professor.password == professor_password
+
+        return professor_object.password == professor_password
 
 
     def save(self, professor: Professor) -> Professor | str:

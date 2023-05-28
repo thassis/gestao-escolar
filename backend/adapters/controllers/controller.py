@@ -74,8 +74,8 @@ class ProfessorController:
 
     def login(self, email, password):
         """Verifies professor login credentials."""
-        print(email, password) # TODO: Remove later
-        self.professor_service.login(email, password)
+        print("recebido controller: ", email, password) # TODO: Remove later
+        return self.professor_service.login(email, password)
         # return True
 
     def create(self, name, email, password):
