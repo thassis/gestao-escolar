@@ -67,8 +67,3 @@ class AlunoRepository(ABC):
     def get_all_alunos(self) -> list[Aluno]:
         """Retrieves all Aluno objects from the repository."""
         pass
-
-    @abstractmethod
-    def get_alunos_paginated(self, offset, limit, name_like) -> list[Aluno]:
-        """Retrieves a paginated list of Aluno objects from the repository."""
-        pass
