@@ -43,25 +43,42 @@ const ListStudent = () => {
     return Number(searchParams.get('pagina') || '1');
   }, [searchParams]);
 
-    //Realizar as consultas dentro de um useEffect
-    useEffect(() => {
+  useEffect(() => {
+    debounce(() => {
+      AlunosServices.getAll(pagina, busca)
+        .then((result) => {
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            console.log(result);
   
-      debounce(() => {
-        AlunosServices.getAll(pagina, busca)
-        //Consulta foi finalizada
-          .then((result) => {
-            if(result instanceof Error){
-              alert(result.message);
-            }else{
-              console.log(result);
-  
-              setTotalCount(result.totalCount);
-              setRows(result.data);
+            const adaptedData = [];
+            for (const key in result.data) {
+              const item = result.data[key];
+              
+              const dados = Object.values(item);
+              //Acessar cada indice do array dados
+              for (let i = 0; i < dados.length; i++) {
+                const adaptedItem = {
+                  id: dados[i].id,
+                  name: dados[i].name,
+                  born_date: dados[i].born_date.toString(),
+                  address: dados[i].address,
+                  tutor_name: dados[i].tutor_name,
+                  tutor_phone: dados[i].tutor_phone,
+                  class_shift: dados[i].class_shift,
+                };
+                adaptedData.push(adaptedItem);
+              }
             }
-          });
-      });
-    }, [busca, pagina]);
-
+  
+            setTotalCount(result.totalCount);
+            setRows(adaptedData);
+          }
+        });
+    });
+  }, [busca, pagina]);
+  
     //Lógica para deletar o registro
     const handleDelete = (id: number) => {
       if(window.confirm('Realmente deseja apagar?')){
@@ -81,8 +98,6 @@ const ListStudent = () => {
       }
     };
 
-
-  
   return (
     <>
       <Header />
@@ -120,24 +135,35 @@ const ListStudent = () => {
             </TableHead>
     
             <TableBody>
-              {rows.map(row => (  
-                <TableRow data-testid="student-row">
-                <TableCell>
-                  <IconButton size="small" onClick={() => navigate(`/student-list/edit/${row.id}`)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton size="small" onClick={() => handleDelete (row.id)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.born_date}</TableCell>
-                <TableCell>{row.address}</TableCell>
-                <TableCell>{row.tutor_name}</TableCell>
-                <TableCell>{row.tutor_phone}</TableCell>
-                <TableCell>{row.class_shift}</TableCell>
-              </TableRow>
-              ))}
+              {rows.length > 0 ? (
+                rows.map((row) => (
+                  <TableRow data-testid="student-row">
+                    <TableCell>
+                      <IconButton
+                        size="small"
+                        onClick={() => navigate(`/student-list/edit/${row.id}`)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton size="small" onClick={() => handleDelete(row.id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell>{row.born_date}</TableCell>
+                    <TableCell>{row.address}</TableCell>
+                    <TableCell>{row.tutor_name}</TableCell>
+                    <TableCell>{row.tutor_phone}</TableCell>
+                    <TableCell>{row.class_shift}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7}>
+                    Nenhum aluno encontrado.
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
 
             {totalCount === 0 &&(
@@ -170,4 +196,3 @@ export default ListStudent;
 function debounce(arg0: () => void) {
   throw new Error("Function not implemented.");
 }
-

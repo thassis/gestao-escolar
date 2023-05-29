@@ -28,34 +28,35 @@ type TPessoasComTotalCount = {
 }
 
 const getAll = async (page = 1, filter = ''): Promise<TPessoasComTotalCount | Error> => {
-  try{
+  try {
     const urlRelative = `/aluno?_page=${page}&_limit=${Environment.LIMITE_DE_LINHAS}&name_like=${filter}`;
-    const { data, headers } = await Api.get(urlRelative);
+    const response = await Api.get(`http://127.0.0.1:8000${urlRelative}`);
 
-    if(data){
+    if (response.data) {
       return {
-        data,
-        totalCount: Number(headers['x-total-count'] || Environment.LIMITE_DE_LINHAS),
+        data: response.data,
+        totalCount: Number(response.headers['x-total-count'] || Environment.LIMITE_DE_LINHAS),
       };
     }
     return new Error('Erro ao listar os registros');
-  }catch(error){  
-    return new Error((error as {message:string}).message ||'Erro ao listar os registros');
+  } catch (error) {
+    return new Error((error as { message: string }).message || 'Erro ao listar os registros');
   }
 };
 
 const getById = async (id: number): Promise<IDetalheAlunos | Error> => {
-  try{
-    const { data} = await Api.get(`/aluno/${id}`);
-  
-    if(data){
-      return data;
+  try {
+    const response = await Api.get(`http://127.0.0.1:8000/aluno/${id}`);
+
+    if (response.data) {
+      return response.data;
     }
-    return new Error('Erro ao consultar o regitro');
-  }catch(error){  
-    return new Error((error as {message:string}).message ||'Erro ao consultar o regitro');
+    return new Error('Erro ao consultar o registro');
+  } catch (error) {
+    return new Error((error as { message: string }).message || 'Erro ao consultar o registro');
   }
 };
+
 
 const create = async (dados: Omit<IDetalheAlunos, 'id'>): Promise<number | Error> => {
   try {
@@ -73,18 +74,24 @@ const create = async (dados: Omit<IDetalheAlunos, 'id'>): Promise<number | Error
 };
 
 const updateById = async (id: number, dados: IDetalheAlunos): Promise<void | Error> => {
-  try{
-    await Api.put(`/aluno/${id}`, dados);
-  }catch(error){  
-    return new Error((error as {message:string}).message ||'Erro ao atualizar o regitro');
+  try {
+    const response = await Api.put(`http://127.0.0.1:8000/aluno/${id}`, dados);
+    console.log('Aluno atualizado com sucesso:', response.data);
+
+    if (response.status === 200) {
+      return;
+    }
+    return new Error('Erro ao atualizar o registro');
+  } catch (error) {
+    return new Error((error as { message: string }).message || 'Erro ao atualizar o registro');
   }
 };
 
 const deleteById = async (id: number): Promise<void | Error> => {
-  try{
-    await Api.delete(`/aluno/${id}`);
-  }catch(error){  
-    return new Error((error as {message:string}).message ||'Erro ao apagar o regitro');
+  try {
+    await Api.delete(`http://127.0.0.1:8000/aluno/${id}`);
+  } catch (error) {
+    return new Error((error as { message: string }).message || 'Erro ao apagar o registro');
   }
 };
 
