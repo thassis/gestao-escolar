@@ -7,27 +7,45 @@ import MeioAmbiente from "../images/meio-ambiente2.jpg";
 
 export const nextEvent = [
   {
-    name: "Tecnologia",
+    id: 1,
+    name: "Evento 1",
+    date: new Date(),
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae elit libero, a pharetra augue.',
     image: Tecnologia,
   },
   {
-    name: "Saude",
+    id: 2,
+    name: "Evento 2",
+    date: new Date(),
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae elit libero, a pharetra augue.',
     image: Saude,
   },
   {
-    name: "Artes",
+    id: 3,
+    name: "Evento 3",
+    date: new Date(),
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae elit libero, a pharetra augue.',
     image: Artes,
   },
   {
-    name: "Bem Estar",
+    id: 4,
+    name: "Evento 4",
+    date: new Date(),
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae elit libero, a pharetra augue.',
     image: BemEstar,
   },
   {
-    name: "Esporte",
+    id: 5,
+    name: "Evento 5",
+    date: new Date(),
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae elit libero, a pharetra augue.',
     image: Esporte,
   },
   {
-    name: "MeioAmbiente",
+    id: 6,
+    name: "Evento 6",
+    date: new Date(),
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae elit libero, a pharetra augue.',
     image: MeioAmbiente,
   },
 ];

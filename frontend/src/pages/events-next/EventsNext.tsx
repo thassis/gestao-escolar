@@ -1,6 +1,8 @@
 import React from "react";
 import { Box } from '@mui/system';
 import { useNavigate } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
+
 import { Button, Card, CardActionArea, CardContent, Grid, Paper, Typography } from "@mui/material";
 import CardMedia from '@mui/material/CardMedia';
 
@@ -9,10 +11,15 @@ import { Descricao, Subtitle } from "./styles";
 import { nextEvent } from "data-front/nextEvent";
 import { MenuList } from "data-front/data";
 
+interface Params {
+  name: string;
+}
 
 const EventsNext = () => {
-  
-   //Importando as imagens
+  const location = useLocation();
+  const { name } = location.state;
+  console.log(name)
+  //Importando as imagens
    const EventoDeTecnologia = require('../../images/Rectangle16.png');
    const EventoDeSaude = require('../../images/Rectangle17.png');
    const EventoDeEsporte = require('../../images/Rectangle18.png');
