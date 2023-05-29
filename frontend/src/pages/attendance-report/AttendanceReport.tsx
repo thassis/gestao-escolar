@@ -42,23 +42,41 @@ const AttendanceReport = () => {
   }, [searchParams]);
 
     //Realizar as consultas dentro de um useEffect
-    useEffect(() => {
+  useEffect(() => {
+    debounce(() => {
+      AlunosServices.getAll(pagina, busca)
+        .then((result) => {
+          if (result instanceof Error) {
+            alert(result.message);
+          } else {
+            console.log(result);
   
-      debounce(() => {
-        AlunosServices.getAll(pagina, busca)
-        //Consulta foi finalizada
-          .then((result) => {
-            if(result instanceof Error){
-              alert(result.message);
-            }else{
-              console.log(result);
-  
-              setTotalCount(result.totalCount);
-              setRows(result.data);
+            const adaptedData = [];
+            for (const key in result.data) {
+              const item = result.data[key];
+              
+              const dados = Object.values(item);
+              //Acessar cada indice do array dados
+              for (let i = 0; i < dados.length; i++) {
+                const adaptedItem = {
+                  id: dados[i].id,
+                  name: dados[i].name,
+                  born_date: dados[i].born_date.toString(),
+                  address: dados[i].address,
+                  tutor_name: dados[i].tutor_name,
+                  tutor_phone: dados[i].tutor_phone,
+                  class_shift: dados[i].class_shift,
+                };
+                adaptedData.push(adaptedItem);
+              }
             }
-          });
-      });
-    }, [busca, pagina]);
+  
+            setTotalCount(result.totalCount);
+            setRows(adaptedData);
+          }
+        });
+    });
+  }, [busca, pagina]);
 
   
   return (
@@ -96,15 +114,23 @@ const AttendanceReport = () => {
               </TableHead>
               
               <TableBody>
-                {rows.map(row => (  
-                  <TableRow data-testid="student-row">
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>0</TableCell>
-                    <TableCell>0</TableCell>
-                    <TableCell>Fazer o calculo</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
+                {rows.length > 0 ? (
+                  rows.map((row) => (
+                    <TableRow data-testid="student-row">
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell>0</TableCell>
+                      <TableCell>0</TableCell>
+                      <TableCell>Fazer o calculo</TableCell>
+                    </TableRow>
+                  ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7}>
+                    Nenhum aluno encontrado.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
 
               {totalCount === 0 &&(
                 <caption>{Environment.LISTAGEM_VAZIA}</caption>

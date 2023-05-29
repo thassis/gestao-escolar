@@ -49,17 +49,28 @@ const AttendanceList = () => {
             alert(result.message);
           } else {
             console.log(result);
+  
+            const adaptedData = Object.values(result.data).flatMap((item) => {
+              const dados = Object.values(item);
+              return dados.map((dado) => ({
+                id: dado.id,
+                name: dado.name,
+                born_date: dado.born_date.toString(),
+                address: dado.address,
+                tutor_name: dado.tutor_name,
+                tutor_phone: dado.tutor_phone,
+                class_shift: dado.class_shift,
+                days: Array.from({ length: 30 }, () => false),
+              }));
+            });
+  
             setTotalCount(result.totalCount);
-            setRows(
-              result.data.map((row) => ({
-                ...row,
-                days: [...Array(30)].map(() => false)
-              }))
-            );
+            setRows(adaptedData);
           }
         });
     });
   }, [busca, pagina]);
+  
 
   const handleToggleDay = (id: number, index: number) => {
     setRows((prevRows) =>
