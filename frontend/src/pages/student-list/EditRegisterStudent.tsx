@@ -15,7 +15,8 @@ const EditRegisterStudent = () => {
   const navigate = useNavigate();
   
   // A parte de cima o Thiago fez
-  const { id } = useParams<'id'>();
+  const { name } = useParams<'name'>();
+  const [id, setId] = useState<Number>();
   const [fullName, setFullName] = useState("");
   const [dataNascimento, setDataNascimento] = useState("");
   const [address, setAddress] = useState("");
@@ -24,14 +25,15 @@ const EditRegisterStudent = () => {
   const [shift, setShift] = useState<ClassShift>();
 
   useEffect(() => {
-    if (id !== undefined) {
+    if (name !== undefined) {
 
-      AlunosServices.getById(Number(id))
+      AlunosServices.getByName(name)
         .then((result) => {
           if(result instanceof Error) {
             alert(result.message);
             navigate('/home');
           } else {
+            setId(result.id);
             setFullName(result.name);
             setDataNascimento(result.born_date);
             setAddress(result.address);
@@ -41,7 +43,7 @@ const EditRegisterStudent = () => {
           }
         });
     }
-  }, [id]);
+  }, [name]);
 
   const handleSave = () => {
     // Construa um objeto com as informações dos campos

@@ -47,25 +47,6 @@ const RegisterStudent = () => {
   const [phoneResponsibleTeacher, setPhoneResponsibleTeacher] = useState("");
   const [shift, setShift] = useState<ClassShift>();
 
-  useEffect(() => {
-    if (id !== undefined) {
-
-      AlunosServices.getById(Number(id))
-        .then((result) => {
-          if(result instanceof Error) {
-            alert(result.message);
-            navigate('/home');
-          } else {
-            setFullName(result.name);
-            setDataNascimento(result.born_date);
-            setAddress(result.address);
-            setResponsibleTeacher(result.tutor_name);
-            setPhoneResponsibleTeacher(result.tutor_phone);
-            setShift(() => result.class_shift as ClassShift | undefined);
-          }
-        });
-    }
-  }, [id]);
 
   const handleSave = () => {
     // Construa um objeto com as informações dos campos

@@ -29,7 +29,7 @@ export const AppRoutes = () => {
               <Route path="events-description" element={<EventsDescription />} />
               <Route path="events-add-photos" element={<EventsAddPhotos />} />
               <Route path="student-list" element={<ListStudent />} />
-              <Route path="student-list/edit/:id" element={<EditRegisterStudent />} />
+              <Route path="student-list/edit/:name" element={<EditRegisterStudent />} />
               <Route path="attendance-list" element={<AttendanceList />} />
               <Route path="attendance-report" element={<AttendanceReport />} />
               <Route path="*" element={<NoPage />} />

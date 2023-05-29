@@ -44,12 +44,12 @@ const getAll = async (page = 1, filter = ''): Promise<TPessoasComTotalCount | Er
   }
 };
 
-const getById = async (id: number): Promise<IDetalheAlunos | Error> => {
+const getByName = async (name: string): Promise<IDetalheAlunos | Error> => {
   try {
-    const response = await Api.get(`http://127.0.0.1:8000/aluno/${id}`);
+    const response = await Api.get(`http://127.0.0.1:8000/alunos/${name}`);
 
     if (response.data) {
-      return response.data;
+      return response.data.Aluno[0];
     }
     return new Error('Erro ao consultar o registro');
   } catch (error) {
@@ -97,7 +97,7 @@ const deleteById = async (id: number): Promise<void | Error> => {
 
 export const AlunosServices = {
   getAll,
-  getById,
+  getByName,
   create,
   updateById,
   deleteById,

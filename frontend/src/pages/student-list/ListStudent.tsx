@@ -86,7 +86,7 @@ const ListStudent = () => {
           .then((result) => {
             if(result instanceof Error){
               alert(result.message);
-            }else{dados
+            }else{
               setRows(oldRows => {
                 return[
                   ...oldRows.filter(row => row.id !== id)
@@ -141,7 +141,7 @@ const ListStudent = () => {
                     <TableCell>
                       <IconButton
                         size="small"
-                        onClick={() => navigate(`/student-list/edit/${row.id}`)}
+                        onClick={() => navigate(`/student-list/edit/${row.name}`)}
                       >
                         <EditIcon />
                       </IconButton>
