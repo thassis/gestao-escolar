@@ -86,7 +86,7 @@ const ListStudent = () => {
           .then((result) => {
             if(result instanceof Error){
               alert(result.message);
-            }else{
+            }else{dados
               setRows(oldRows => {
                 return[
                   ...oldRows.filter(row => row.id !== id)

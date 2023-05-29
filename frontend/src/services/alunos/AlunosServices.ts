@@ -75,7 +75,7 @@ const create = async (dados: Omit<IDetalheAlunos, 'id'>): Promise<number | Error
 
 const updateById = async (id: number, dados: IDetalheAlunos): Promise<void | Error> => {
   try {
-    const response = await Api.put(`http://127.0.0.1:8000/aluno/${id}`, dados);
+    const response = await Api.post('http://127.0.0.1:8000/update/aluno', dados);
     console.log('Aluno atualizado com sucesso:', response.data);
 
     if (response.status === 200) {
@@ -89,7 +89,7 @@ const updateById = async (id: number, dados: IDetalheAlunos): Promise<void | Err
 
 const deleteById = async (id: number): Promise<void | Error> => {
   try {
-    await Api.delete(`http://127.0.0.1:8000/aluno/${id}`);
+    await Api.post('http://127.0.0.1:8000/delete/aluno', {id:id})
   } catch (error) {
     return new Error((error as { message: string }).message || 'Erro ao apagar o registro');
   }
