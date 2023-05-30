@@ -6,7 +6,9 @@
 """
 
 from abc import ABC, abstractmethod
-from backend.core.domain.models import Aluno, Professor, PeriodoLetivo
+from backend.core.domain.models import (
+    Aluno, Professor, PeriodoLetivo, DiaSemAula
+)
 
 
 class ProfessorRepository(ABC):
@@ -96,4 +98,29 @@ class PeriodoLetivoRepository(ABC):
     @abstractmethod
     def get_all_periodos_letivos(self) -> list[PeriodoLetivo]:
         """Retrieves all PeriodoLetivo objects from the repository."""
+        pass
+
+
+class DiaSemAulaRepository(ABC):
+    """DiaSemAula repository interface for domain layer. It defines the methods
+    for saving, retrieving, and deleting DiaSemAula objects."""
+
+    @abstractmethod
+    def save(self, dia_sem_aula):
+        """Saves a DiaSemAula object to the repository."""
+        pass
+
+    @abstractmethod
+    def get_by_id(self, dia_sem_aula_id: int):
+        """Retrieves a DiaSemAula object from the repository by its ID."""
+        pass
+
+    @abstractmethod
+    def delete(self, dia_sem_aula):
+        """Deletes a DiaSemAula object from the repository."""
+        pass
+
+    @abstractmethod
+    def get_all_dias_sem_aula(self):
+        """Retrieves all DiaSemAula objects from the repository."""
         pass
