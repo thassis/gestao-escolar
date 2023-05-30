@@ -6,7 +6,7 @@
 """
 
 from abc import ABC, abstractmethod
-from backend.core.domain.models import Aluno
+from backend.core.domain.models.Aluno import Aluno
 
 class AlunoRepository(ABC):
     """Aluno repository interface for domain layer. It defines the methods

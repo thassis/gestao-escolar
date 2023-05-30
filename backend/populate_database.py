@@ -1,6 +1,6 @@
 """Populate the database with some data."""
 
-from adapters.database.database import (
+from adapters.database.PopulateDatabaseFunctions import (
     DatabaseSession, create_tables, create_some_alunos, create_some_professor,
     create_some_periodos_letivos, create_some_dias_sem_aula,
     delete_all_alunos, delete_all_professors, delete_all_periodos_letivos,

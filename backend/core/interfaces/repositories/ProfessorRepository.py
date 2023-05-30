@@ -6,7 +6,7 @@
 """
 
 from abc import ABC, abstractmethod
-from backend.core.domain.models import Professor
+from backend.core.domain.models.Professor import Professor
 
 class ProfessorRepository(ABC):
     """Professor repository interface for domain layer. It defines the methods

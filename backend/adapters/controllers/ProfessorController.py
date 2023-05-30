@@ -3,7 +3,7 @@ between the frontend adapter and the domain layer without exposing the
 database adapter to the frontend adapter.
 """
 
-from backend.core.domain.services import ProfessorService
+from backend.core.domain.services.ProfessorService import ProfessorService
 from backend.adapters.database.repositories.ProfessorRepository import ProfessorRepositoryPostgres
 
 from backend.adapters.database.DatabaseSession import DatabaseSession
