@@ -23,8 +23,9 @@ import {
 import { BoxList, PaperList } from "./styles";
 import { useDebounce } from "shared-components/hooks";
 import { Environment } from "shared-components/environment";
-import Header from "shared-components/header/Header";import { AlunosServices, IListagemALunos } from "services/alunos/AlunosServices";
-;
+import Header from "shared-components/header/Header";
+import { AlunosServices, IListagemALunos } from "services/alunos/AlunosServices";
+
 
 const ListStudent = () => {
   //Definindo os stats

@@ -43,3 +43,14 @@ export const BodyRegisterButtonContainer = styled(Box)(() => ({
   justifyContent: 'center'
 }))
 
+export const BoxForm = styled(Box)(() => ({
+  display: "flex",
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginLeft: '8px'
+}))
+
+export const BoxSelect = styled(Box)(() => ({
+  minWidth: '200px'
+}))
