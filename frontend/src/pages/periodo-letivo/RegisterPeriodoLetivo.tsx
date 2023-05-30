@@ -26,7 +26,24 @@ const RegisterPeriodoLetivo = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    PeriodoLetivoServices.create(periodoLetivo as IPeriodoLetivo)
+    const getDate = (date: string) => {
+      const dateString = date;
+      const dateParts = dateString.split("/");
+      
+      const dateObj = new Date();
+      dateObj.setHours(0, 0, 0, 0); // Set time to midnight
+      dateObj.setDate(Number(dateParts[0]));
+      dateObj.setMonth(Number(dateParts[1]) - 1);
+      dateObj.setFullYear(Number(dateParts[2]));
+
+      return dateObj;
+    };
+
+    PeriodoLetivoServices.create({
+      ...periodoLetivo,
+      start_date: getDate(periodoLetivo.start_date as string).toDateString(),
+      end_date: getDate(periodoLetivo.end_date as string).toDateString(),
+    } as IPeriodoLetivo)
       .then((response) => {
         alert("Período letivo atualizado com sucesso!");
         navigate("/periodo-letivo");

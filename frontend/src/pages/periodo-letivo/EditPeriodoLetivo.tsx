@@ -14,10 +14,21 @@ const EditPeriodoLetivo = () => {
 
   const periodoLetivoParams = location.state as IPeriodoLetivo;
 
+  const getDateFormatted = (dateStr: string) => {
+    const date = new Date(dateStr);
+    date.setDate(date.getDate() + 1);
+    return date.toLocaleDateString("pt-Br",
+    {
+      month: "2-digit",
+      day: "2-digit",
+      year: "numeric",
+    })
+  }
+
   const [periodoLetivo, setPeriodoLetivo] = useState<IPeriodoLetivo>({
     ...periodoLetivoParams,
-    start_date: new Date(periodoLetivoParams.start_date).toLocaleDateString(),
-    end_date: new Date(periodoLetivoParams.end_date).toLocaleDateString(),
+    start_date: getDateFormatted(periodoLetivoParams.start_date),
+    end_date: getDateFormatted(periodoLetivoParams.end_date),
   });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,8 +41,24 @@ const EditPeriodoLetivo = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const getDate = (date: string) => {
+      const dateString = date;
+      const dateParts = dateString.split("/");
+      
+      const dateObj = new Date();
+      dateObj.setHours(0, 0, 0, 0); // Set time to midnight
+      dateObj.setDate(Number(dateParts[0]));
+      dateObj.setMonth(Number(dateParts[1]) - 1);
+      dateObj.setFullYear(Number(dateParts[2]));
 
-    PeriodoLetivoServices.update(periodoLetivo)
+      return dateObj;
+    };
+
+    PeriodoLetivoServices.update({
+      ...periodoLetivo,
+      start_date: getDate(periodoLetivo.start_date).toDateString(),
+      end_date: getDate(periodoLetivo.end_date).toDateString(),
+    })
       .then((response) => {
         alert("Período letivo atualizado com sucesso!");
         navigate("/periodo-letivo");

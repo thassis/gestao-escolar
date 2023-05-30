@@ -28,17 +28,18 @@ const PeriodoLetivo = () => {
   const [periodosLetivo, setPeriodosLetivo] = useState<IPeriodoLetivo[]>([]);
 
   const handleDelete = (id: number) => {
-    if(window.confirm('Realmente deseja apagar?')){
-      PeriodoLetivoServices.deleteById(id)
-        .then((result) => {
-          if(result instanceof Error){
-            alert(result.message);
-          }else{
-            alert("Período letivo apagado com sucesso!");
-            setPeriodosLetivo(periodosLetivo.filter(periodoLetivo => periodoLetivo.id !== id));
-          }
-        });
-    }    
+    if (window.confirm("Realmente deseja apagar?")) {
+      PeriodoLetivoServices.deleteById(id).then((result) => {
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          alert("Período letivo apagado com sucesso!");
+          setPeriodosLetivo(
+            periodosLetivo.filter((periodoLetivo) => periodoLetivo.id !== id)
+          );
+        }
+      });
+    }
   };
 
   const handleEdit = (periodoLetivo: IPeriodoLetivo) => {
@@ -46,7 +47,7 @@ const PeriodoLetivo = () => {
   };
 
   useEffect(() => {
-    console.log("use effect")
+    console.log("use effect");
     PeriodoLetivoServices.getAll()
       .then((response) => {
         setPeriodosLetivo(response);
@@ -88,10 +89,26 @@ const PeriodoLetivo = () => {
                 <TableRow key={periodoLetivo.id}>
                   <TableCell>{periodoLetivo.id}</TableCell>
                   <TableCell>
-                    {new Date(periodoLetivo.start_date).toLocaleDateString()}
+                    {(() => {
+                      const date = new Date(periodoLetivo.start_date);
+                      date.setDate(date.getDate() + 1);
+                      return date.toLocaleDateString("pt-Br", {
+                        month: "2-digit",
+                        day: "2-digit",
+                        year: "numeric",
+                      });
+                    })()}
                   </TableCell>
                   <TableCell>
-                    {new Date(periodoLetivo.end_date).toLocaleDateString()}
+                    {(() => {
+                      const date = new Date(periodoLetivo.end_date);
+                      date.setDate(date.getDate() + 1);
+                      return date.toLocaleDateString("pt-Br", {
+                        month: "2-digit",
+                        day: "2-digit",
+                        year: "numeric",
+                      });
+                    })()}
                   </TableCell>
                   <TableCell>{periodoLetivo.class_shift}</TableCell>
                   <TableCell>
