@@ -31,6 +31,10 @@ const Home = () => {
     window.location.replace('/scheduled-events');
   }
 
+  const onNavigatePeriodoLetivo = () => {
+    window.location.replace('/periodo-letivo');
+  }
+
 
   return (
     <>
@@ -104,6 +108,19 @@ const Home = () => {
                   </BoxImage>
                   <Description>
                     Agenda de Eventos
+                  </Description>
+                </CardContent>
+              </Card>
+            </GridCards>
+
+            <GridCards item onClick={() => onNavigatePeriodoLetivo()}>
+              <Card>
+                <CardContent >
+                  <BoxImage >
+                    <EventosIcon width={300} height={300}/>
+                  </BoxImage>
+                  <Description>
+                    Período Letivo
                   </Description>
                 </CardContent>
               </Card>
