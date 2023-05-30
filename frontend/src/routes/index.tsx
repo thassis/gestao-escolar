@@ -16,6 +16,9 @@ import AttendanceReport from "pages/attendance-report/AttendanceReport";
 import PeriodoLetivo from "pages/periodo-letivo/PeriodoLetivo";
 import EditPeriodoLetivo from "pages/periodo-letivo/EditPeriodoLetivo";
 import RegisterPeriodoLetivo from "pages/periodo-letivo/RegisterPeriodoLetivo";
+import NoClassDays from "pages/no-class-days/NoClassDays";
+import EditNoClassDay from "pages/no-class-days/EditNoClassDay";
+import RegisterNoClassDay from "pages/no-class-days/RegisterNoClassDay";
 
 export const AppRoutes = () => {
   return (
@@ -42,6 +45,12 @@ export const AppRoutes = () => {
         <Route
           path="periodo-letivo/create"
           element={<RegisterPeriodoLetivo />}
+        />
+        <Route path="no-class-day" element={<NoClassDays />} />
+        <Route path="no-class-day/edit" element={<EditNoClassDay />} />
+        <Route
+          path="no-class-day/create"
+          element={<RegisterNoClassDay />}
         />
         <Route path="*" element={<NoPage />} />
       </Route>

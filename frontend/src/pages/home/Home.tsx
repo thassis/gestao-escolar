@@ -1,8 +1,7 @@
 import React from "react";
 import { Box } from '@mui/system';
-import { useNavigate } from "react-router-dom";
 import Header from "shared-components/header/Header";
-import { Button, Card, CardContent, Grid, Paper, Typography } from "@mui/material";
+import { Card, CardContent, Grid } from "@mui/material";
 
 import CadastroAlunoIcon from "assets/svgs/CadastroAlunoIcon";
 import ListaDePresenca from "assets/svgs/ListaDePresencaIcon";
@@ -35,6 +34,9 @@ const Home = () => {
     window.location.replace('/periodo-letivo');
   }
 
+  const onNavigateNoClassDays = () => {
+    window.location.replace('/no-class-day');
+  }
 
   return (
     <>
@@ -121,6 +123,19 @@ const Home = () => {
                   </BoxImage>
                   <Description>
                     Período Letivo
+                  </Description>
+                </CardContent>
+              </Card>
+            </GridCards>
+
+            <GridCards item onClick={() => onNavigateNoClassDays()}>
+              <Card>
+                <CardContent >
+                  <BoxImage >
+                    <EventosIcon width={300} height={300}/>
+                  </BoxImage>
+                  <Description>
+                    Dias sem aula
                   </Description>
                 </CardContent>
               </Card>
