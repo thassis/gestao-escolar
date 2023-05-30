@@ -18,11 +18,16 @@ class DatabaseSession:
     """
     def __init__(self):
         """Initializes the database engine and session."""
-        # postgresql://<username>:<password>@<host>:<port>/<database_name>
-        self.engine = create_engine(
-            'postgresql://postgres:postgres@172.18.0.2:5432/postgres',
-            echo=True)
-
+        ips = ['172.18.0.2', '172.19.0.2']
+        for ip in ips:
+            try:
+                # postgresql://<username>:<password>@<host>:<port>/<database_name>
+                self.engine = create_engine(
+                    f'postgresql://postgres:postgres@{ip}:5432/postgres',
+                    echo=True)
+                break  # exit loop if connection is successful
+            except Exception as error:
+                print(f"Error connecting to {ip}: {error}")
         self.db_session = Session(bind=self.engine)
 
     def get_db_session(self) -> Session:
@@ -129,18 +134,54 @@ def create_some_alunos(engine: Engine):
     session = session_maker()
 
     aluno_list = [
-        {'name': 'João Silva', 'born_date': '2000-01-01',
-         'address': 'Rua Principal, 123', 'tutor_name': 'Maria Silva',
-         'tutor_phone': '(11) 5555-5555', 'class_shift': 'Manhã'},
-        {'name': 'Maria Silva', 'born_date': '2001-02-02',
-         'address': 'Rua das Flores, 456', 'tutor_name': 'João Silva',
-         'tutor_phone': '(11) 5555-5555', 'class_shift': 'Tarde'},
-        {'name': 'Roberto Santos', 'born_date': '2002-03-03',
-         'address': 'Rua dos Pinheiros, 789', 'tutor_name': 'Alice Santos',
-         'tutor_phone': '(11) 5555-5555', 'class_shift': 'Manhã'},
-        {'name': 'Samantha Oliveira', 'born_date': '2003-04-04',
-         'address': 'Rua das Palmeiras, 321', 'tutor_name': 'Miguel Oliveira',
-         'tutor_phone': '(11) 5555-5555', 'class_shift': 'Tarde'}
+        {'name': 'Pedro Souza', 'born_date': '2000-01-01',
+        'address': 'Rua Principal, 123', 'tutor_name': 'Ana Souza',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Manhã'},
+        {'name': 'Ana Paula Souza', 'born_date': '2001-02-02',
+        'address': 'Rua das Flores, 456', 'tutor_name': 'Pedro Souza',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Tarde'},
+        {'name': 'Lucas Oliveira', 'born_date': '2002-03-03',
+        'address': 'Rua dos Pinheiros, 789', 'tutor_name': 'Alice Santos',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Manhã'},
+        {'name': 'Mariana Santos', 'born_date': '2003-04-04',
+        'address': 'Rua das Palmeiras, 321', 'tutor_name': 'Miguel Oliveira',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Tarde'},
+        {'name': 'Gustavo Lima', 'born_date': '2004-05-05',
+        'address': 'Rua das Acácias, 678', 'tutor_name': 'Juliana Lima',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Manhã'},
+        {'name': 'Juliana Lima', 'born_date': '2005-06-06',
+        'address': 'Rua das Orquídeas, 901', 'tutor_name': 'Gustavo Lima',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Tarde'},
+        {'name': 'Rafaela Costa', 'born_date': '2006-07-07',
+        'address': 'Rua das Margaridas, 234', 'tutor_name': 'Fernando Costa',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Manhã'},
+        {'name': 'Fernando Costa', 'born_date': '2007-08-08',
+        'address': 'Rua das Violetas, 567', 'tutor_name': 'Rafaela Costa',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Tarde'},
+        {'name': 'Larissa Santos', 'born_date': '2008-09-09',
+        'address': 'Rua das Begônias, 890', 'tutor_name': 'Rodrigo Santos',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Manhã'},
+        {'name': 'Rodrigo Santos', 'born_date': '2009-10-10',
+        'address': 'Rua das Azaleias, 123', 'tutor_name': 'Larissa Santos',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Tarde'},
+        {'name': 'Isabela Oliveira', 'born_date': '2010-11-11',
+        'address': 'Rua das Hortênsias, 456', 'tutor_name': 'Thiago Oliveira',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Manhã'},
+        {'name': 'Thiago Oliveira', 'born_date': '2011-12-12',
+        'address': 'Rua das Camélias, 789', 'tutor_name': 'Isabela Oliveira',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Tarde'},
+        {'name': 'Gabriel Silva', 'born_date': '2012-01-13',
+        'address': 'Rua das Tulipas, 246', 'tutor_name': 'Carla Silva',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Manhã'},
+        {'name': 'Carla Silva', 'born_date': '2013-02-14',
+        'address': 'Rua das Margaridas, 802', 'tutor_name': 'Gabriel Silva',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Tarde'},
+        {'name': 'Luciana Santos', 'born_date': '2014-03-15',
+        'address': 'Rua das Orquídeas, 246', 'tutor_name': 'Ricardo Santos',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Manhã'},
+        {'name': 'Ricardo Santos', 'born_date': '2015-04-16',
+        'address': 'Rua das Violetas, 802', 'tutor_name': 'Luciana Santos',
+        'tutor_phone': '(11) 5555-5555', 'class_shift': 'Tarde'}
     ]
 
     for aluno in aluno_list:
@@ -148,7 +189,8 @@ def create_some_alunos(engine: Engine):
                              address=aluno['address'], tutor_name=aluno['tutor_name'],
                              tutor_phone=aluno['tutor_phone'], class_shift=aluno['class_shift'])
 
-        existing_aluno = session.query(AlunoORM).filter_by(name=new_aluno.name, born_date=new_aluno.born_date).first()
+        existing_aluno = session.query(AlunoORM).filter_by(name=new_aluno.name,
+                                                           born_date=new_aluno.born_date).first()
         if existing_aluno: # avoid duplicates and errors for existing data
             continue
 
