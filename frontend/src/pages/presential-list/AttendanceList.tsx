@@ -128,36 +128,37 @@ const AttendanceList = () => {
       if (result instanceof Error) {
         alert(result.message);
       } else {
-        console.log(result);
-        const localAttendance = localStorage.getItem(ATTENDANCE_LIST);
+        const valueStr = localStorage.getItem(ATTENDANCE_LIST);
 
-        let attendanceList: IRow[] = [];
+        let localAdaptedData: IRow[] = [];
+        const adaptedData: IRow[] = [];
 
-        if (localAttendance) {
-          attendanceList = JSON.parse(localAttendance) as IRow[];
-          console.log(attendanceList);
-        } else {
-          const adaptedData = Object.values(result.data).flatMap((item) => {
-            const dados = Object.values(item);
-            return dados.map((dado) => ({
-              id: dado.id,
-              name: dado.name,
-              born_date: dado.born_date.toString(),
-              address: dado.address,
-              tutor_name: dado.tutor_name,
-              tutor_phone: dado.tutor_phone,
-              class_shift: dado.class_shift,
-            }));
-          });
+        if (valueStr) {
+          localAdaptedData = JSON.parse(valueStr) as IRow[];
+        }
 
-          attendanceList = adaptedData.map((data) => ({
-            ...data,
-            attendanceList: getEmptyAttendance(),
-          }));
+        for (const key in result.data) {
+          const item = result.data[key];
+
+          const dados = Object.values(item);
+          //Acessar cada indice do array dados
+          for (let i = 0; i < dados.length; i++) {
+            const adaptedItem = {
+              id: dados[i].id,
+              name: dados[i].name,
+              born_date: dados[i].born_date.toString(),
+              address: dados[i].address,
+              tutor_name: dados[i].tutor_name,
+              tutor_phone: dados[i].tutor_phone,
+              class_shift: dados[i].class_shift,
+              attendanceList: localAdaptedData.find(data => data.id === dados[i].id)?.attendanceList || getEmptyAttendance(),
+            };
+            adaptedData.push(adaptedItem);
+          }
         }
 
         setTotalCount(result.totalCount);
-        setRows(attendanceList);
+        setRows(adaptedData);
       }
     });
   }, [busca, pagina, selectedMonth]);
