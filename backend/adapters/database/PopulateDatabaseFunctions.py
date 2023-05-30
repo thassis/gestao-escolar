@@ -1,122 +1,16 @@
-"""Database ORM models for SQLAlchemy."""
+"""Functions to populate Database to test aplication"""
 
-from sqlalchemy import create_engine, Engine
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session, relationship
-
+from sqlalchemy.orm import sessionmaker
+from backend.adapters.database.ORMs.AlunoORM import AlunoORM
+from backend.adapters.database.ORMs.ProfessorORM import ProfessorORM
+from backend.adapters.database.ORMs.PeriodoLetivoORM import PeriodoLetivoORM
+from backend.adapters.database.ORMs.DiasSemAulaORM import DiaSemAulaORM
 import sys
 sys.path.append('../../../')
 
-from backend.core.domain.models import Aluno
-
-class DatabaseSession:
-    """Database session class for SQLAlchemy. It creates a database engine
-    and a session. The engine is used to create the database tables and
-    the session is used to query the database. The engine and session
-    are passed to the repositories.\\
-    """
-    def __init__(self):
-        """Initializes the database engine and session."""
-        # postgresql://<username>:<password>@<host>:<port>/<database_name>
-        self.engine = create_engine(
-            'postgresql://postgres:postgres@172.18.0.2:5432/postgres',
-            echo=True)
-
-        self.db_session = Session(bind=self.engine)
-
-    def get_db_session(self) -> Session:
-        """Returns the SQLAlchemy session."""
-        return self.db_session
-
-    def close_db_session(self):
-        """Closes the database session."""
-        self.db_session.close()
-
-    def get_engine(self) -> Engine:
-        """Returns the SQLAlchemy engine."""
-        return self.engine
-
-
 Base = declarative_base()
-
-class AlunoORM(Base):
-    """Aluno ORM class for SQLAlchemy."""
-    __tablename__ = 'aluno'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False)
-    born_date = Column(Date, nullable=False)
-    address = Column(String(200), nullable=False)
-    tutor_name = Column(String(100), nullable=False)
-    tutor_phone = Column(String(20), nullable=False)
-    class_shift = Column(String(20), nullable=False)
-
-    @staticmethod
-    def from_aluno(aluno):
-        """Converts an Aluno object to an AlunoORM object."""
-        return AlunoORM(
-            name=aluno.name,
-            born_date=aluno.born_date,
-            address=aluno.address,
-            tutor_name=aluno.tutor_name,
-            tutor_phone=aluno.tutor_phone,
-            class_shift=aluno.class_shift
-        )
-
-    @staticmethod
-    def to_aluno(aluno_orm):
-        """Converts an AlunoORM object to an Aluno object."""
-        return Aluno(
-            id=aluno_orm.id,
-            name=aluno_orm.name,
-            born_date=aluno_orm.born_date,
-            address=aluno_orm.address,
-            tutor_name=aluno_orm.tutor_name,
-            tutor_phone=aluno_orm.tutor_phone,
-            class_shift=aluno_orm.class_shift
-        )
-
-
-class ProfessorORM(Base):
-    """Professor ORM class for SQLAlchemy."""
-    __tablename__ = 'professor'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False)
-    email = Column(String(100), nullable=False, unique=True)
-    password = Column(String(100), nullable=False)
-
-    @staticmethod
-    def from_professor(professor):
-        """Converts a Professor object to a ProfessorORM object."""
-        return ProfessorORM(
-            name=professor.name,
-            email=professor.email,
-            password=professor.password
-        )
-
-
-class PeriodoLetivoORM(Base):
-    """PeriodoLetivo ORM class for SQLAlchemy."""
-    __tablename__ = 'periodo_letivo'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    start_date = Column(Date, nullable=False)
-    end_date = Column(Date, nullable=False)
-    class_shift = Column(String(100), nullable=False)
-    dias_sem_aula = relationship("DiaSemAulaORM", backref="periodo_letivo")
-
-
-class DiaSemAulaORM(Base):
-    """DiaSemAula ORM class for SQLAlchemy."""
-    __tablename__ = 'dia_sem_aula'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    periodo_letivo_id = Column(Integer, ForeignKey('periodo_letivo.id'), nullable=False)
-    date = Column(Date, nullable=False)
-    reason = Column(String(100), nullable=False)
-
 
 def create_tables(engine: Engine):
     """Creates the database tables."""
