@@ -30,18 +30,30 @@ import {
 import { BoxForm, BoxList, BoxSelect, PaperList } from "./styles";
 import { ATTENDANCE_LIST } from "utils/storageKeys";
 
+const currentYear = new Date().getFullYear();
+
+export const getEmptyAttendance = (): Attendance[] => {
+  return [...Array(12)].flatMap((_, month) => {
+    const days = new Date(currentYear, month + 1, 0).getDate();
+    return [...Array(days)].map((_, index) => ({
+      isPresent: new Date(`${currentYear}-${month+1}-${index + 1}`).getTime() < new Date().getTime(),
+      date: `${month+1}-${index + 1}-${currentYear}`,
+    }))
+  })
+}
+
 type Attendance = {
   date: string;
   isPresent: boolean;
 };
 
-interface IRow extends IListagemALunos {
+export interface IRow extends IListagemALunos {
   attendanceList: Attendance[];
 }
 
 const AttendanceList = () => {
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth();
+  console.log(getEmptyAttendance())
+  const currentMonth = new Date().getMonth() + 1;
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [totalCount, setTotalCount] = useState(0);
@@ -61,16 +73,6 @@ const AttendanceList = () => {
     console.log(month);
     setSelectMonth(month);
   };
-
-  const getEmptyAttendance = (): Attendance[] => {
-    return [...Array(12)].flatMap((_, month) => {
-      const days = new Date(currentYear, month + 1, 0).getDate();
-      return [...Array(days)].map((_, index) => ({
-        isPresent: false,
-        date: `${month}-${index + 1}-${currentYear}`,
-      }))
-    })
-  }
 
   const numberOfDays = new Date(currentYear, selectedMonth, 0).getDate();
 
@@ -96,14 +98,14 @@ const AttendanceList = () => {
   const onClickSave = () => {
     localStorage.setItem(ATTENDANCE_LIST, JSON.stringify(rows));
     setHasChanges(false);
-    
+
     alert("Dados salvos com sucesso!");
   };
 
   const getAttendaceByStudentMonth = (row: IRow) => {
     const attendanceByMonth = row.attendanceList.filter(attendance => {
       const month = parseInt(attendance.date.split('-')[0])
-      return month === selectedMonth - 1;
+      return month === selectedMonth;
     });
 
     console.log(attendanceByMonth.length)
@@ -111,6 +113,7 @@ const AttendanceList = () => {
     return attendanceByMonth.map((attendance, index) => (
       <TableCell key={index}>
         <Checkbox
+          disabled={new Date().getTime() < new Date(attendance.date).getTime()}
           checked={attendance.isPresent}
           onChange={() =>
             handleToggleDay(row.id, attendance.date)
