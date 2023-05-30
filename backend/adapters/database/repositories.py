@@ -10,13 +10,15 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import column
 
 from backend.core.domain.models import (
-    Professor, Aluno
+    Professor, Aluno, PeriodoLetivo
 )
 from backend.core.interfaces.repositories import(
-    ProfessorRepository, AlunoRepository
+    ProfessorRepository, AlunoRepository, PeriodoLetivoRepository
 )
 
-from backend.adapters.database.database import ProfessorORM, AlunoORM
+from backend.adapters.database.database import (
+    ProfessorORM, AlunoORM, PeriodoLetivoORM
+)
 
 class ProfessorRepositoryPostgres(ProfessorRepository):
     """Professor repository class for PostgreSQL implementation."""
@@ -221,3 +223,82 @@ class AlunoRepositoryPostgres(AlunoRepository):
         if alunos is None:
             return []
         return alunos
+
+
+class PeriodoLetivoRepositoryPostgres(PeriodoLetivoRepository):
+    """PeriodoLetivo repository class for PostgreSQL implementation."""
+
+    def __init__(self, db: Session):
+        """Initializes the repository with a database session."""
+        self.database = db
+
+
+    def save(self, periodo_letivo: PeriodoLetivo) -> PeriodoLetivo | str:
+        """Saves a PeriodoLetivo object to the database. If the save fails,
+        an exception is raised and the error message is returned.\\
+        Args:
+            periodo_letivo (PeriodoLetivo): PeriodoLetivo object to be saved.
+        Returns:
+            PeriodoLetivo | str: PeriodoLetivo object if the save is successful.
+                Otherwise, returns an error message.
+        """
+        try:
+            periodo_letivo_orm = PeriodoLetivoORM.from_periodo_letivo(periodo_letivo)
+            self.database.add(periodo_letivo_orm)
+            self.database.commit()
+            self.database.refresh(periodo_letivo_orm)
+        except SQLAlchemyError as exception:
+            error_message = f"An error occurred: {exception}"
+            print(error_message) # TODO: Remove later
+            return error_message
+        return periodo_letivo
+
+
+    def delete(self, periodo_letivo: PeriodoLetivo) -> str:
+        """Deletes a PeriodoLetivo object from the database. If the deletion
+        fails, an exception is raised and the error message is returned.\\
+        Args:
+            periodo_letivo (PeriodoLetivo): PeriodoLetivo object to be deleted.
+        Returns:
+            str: Error message if the deletion fails. Otherwise,
+                returns a success message.
+        """
+        try:
+            self.database.delete(periodo_letivo)
+            self.database.commit()
+        except SQLAlchemyError as exception:
+            error_message = f"An error occurred: {exception}"
+            print(error_message) # TODO: Remove later
+            return error_message
+        return "Removed successfully"
+
+
+    def get_by_id(self, periodo_letivo_id: int) -> PeriodoLetivo | str:
+        """Retrieves a PeriodoLetivo object from the database by its ID. If the
+        retrieval fails, an error message is returned.\\
+        Args:
+            periodo_letivo_id (int): PeriodoLetivo's ID.
+        Returns:
+            PeriodoLetivo | str: PeriodoLetivo object if the retrieval is successful.
+                Otherwise, returns an error message.
+        """
+        periodo_letivo = self.database.query(PeriodoLetivoORM).filter_by(id=periodo_letivo_id).first()
+        if periodo_letivo is None:
+            return f"PeriodoLetivo with ID {periodo_letivo_id} not found"
+        return periodo_letivo
+
+
+    def get_all_periodos_letivos(self) -> list[PeriodoLetivo]:
+        """Retrieves all PeriodoLetivo objects from the database. If the retrieval
+        fails, an empty list is returned.\\
+        Returns:
+            list[PeriodoLetivo]: List of PeriodoLetivo objects.
+        """
+        periodos_letivos_orm = self.database.query(PeriodoLetivoORM).all()
+        periodos_letivos = [
+            PeriodoLetivoORM.to_periodo_letivo(periodo_letivo)
+                for periodo_letivo in periodos_letivos_orm
+            ]
+        if periodos_letivos is None:
+            return []
+        return periodos_letivos

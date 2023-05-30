@@ -6,7 +6,7 @@
 """
 
 from abc import ABC, abstractmethod
-from backend.core.domain.models import Aluno, Professor
+from backend.core.domain.models import Aluno, Professor, PeriodoLetivo
 
 
 class ProfessorRepository(ABC):
@@ -71,4 +71,29 @@ class AlunoRepository(ABC):
     @abstractmethod
     def get_alunos_paginated(self, offset, limit, name_like) -> list[Aluno]:
         """Retrieves a paginated list of Aluno objects from the repository."""
+        pass
+
+
+class PeriodoLetivoRepository(ABC):
+    """PeriodoLetivo repository interface for domain layer. It defines the methods
+    for saving, retrieving, and deleting PeriodoLetivo objects."""
+
+    @abstractmethod
+    def save(self, periodo_letivo) -> None:
+        """Saves a PeriodoLetivo object to the repository."""
+        pass
+
+    @abstractmethod
+    def get_by_id(self, periodo_letivo_id: int) -> None:
+        """Retrieves a PeriodoLetivo object from the repository by its ID."""
+        pass
+
+    @abstractmethod
+    def delete(self, periodo_letivo) -> None:
+        """Deletes a PeriodoLetivo object from the repository."""
+        pass
+
+    @abstractmethod
+    def get_all_periodos_letivos(self) -> list[PeriodoLetivo]:
+        """Retrieves all PeriodoLetivo objects from the repository."""
         pass

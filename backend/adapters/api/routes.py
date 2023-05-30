@@ -2,7 +2,9 @@ from flask import Blueprint, request, jsonify
 import sys
 sys.path.append('../../../')
 
-from backend.adapters.controllers.controller import AlunoController, ProfessorController
+from backend.adapters.controllers.controller import (
+    AlunoController, ProfessorController, PeriodoLetivoController
+)
 
 app = Blueprint('routes', __name__)
 
@@ -184,3 +186,77 @@ def delete_professor() -> tuple:
     if not response:
         return jsonify({"error": "Invalid ID"}), 200
     return data, 200
+
+
+####                                                   ####
+#       Implementação das rotas para Período Letivo       #
+####                                                   ####
+
+@app.route("/create_periodo_letivo", methods=['POST'])
+def create_periodo_letivo() -> tuple:
+    """Create a new periodo letivo.\\
+    Returns:
+        A tuple containing the data and a status code.
+    """
+    data = request.get_json()
+    if not data:
+        return jsonify({'error': 'Invalid data'}), 400
+
+    start_date = data.get('start_date')
+    end_date = data.get("end_date")
+    class_shift = data.get("class_shift")
+
+    response = PeriodoLetivoController().create(start_date, end_date, class_shift)
+    if not response:
+        return jsonify({"error":"Invalid credentials"}), 200
+
+    return data, 200
+
+
+@app.route("/update_periodo_letivo", methods=['POST'])
+def update_periodo_letivo() -> tuple:
+    data = request.get_json()
+    if not data.get('id'):
+        return jsonify({'error': 'ID not given'}), 400
+
+    periodo_letivo_id = data.get('id')
+    start_date = data.get('start_date')
+    end_date = data.get("end_date")
+    class_shift = data.get("class_shift")
+
+    response = PeriodoLetivoController().update(periodo_letivo_id, start_date,
+                                                end_date, class_shift)
+    if not response:
+        return jsonify({"error":"Invalid credentials"}), 200
+    return data, 200
+
+
+@app.route("/delete_periodo_letivo", methods=['POST'])
+def delete_periodo_letivo() -> tuple:
+    """Delete a periodo letivo.\\
+    Returns:
+        A tuple containing the data and a status code.
+    """
+    data = request.get_json()
+    if not data.get('id'):
+        return jsonify({'error': 'Invalid data'}), 400
+
+    periodo_letivo_id = data.get('id')
+
+    response = PeriodoLetivoController().remove(periodo_letivo_id)
+    if not response:
+        return jsonify({"error":"Invalid credentials"}), 200
+    return data, 200
+
+
+@app.route("/all_periodo_letivos", methods=['GET'])
+def get_all_periodo_letivos() -> tuple:
+    """Get all periodo letivos from the database.\\
+    Returns:
+        A tuple containing the data and a status code.
+    """
+    data = PeriodoLetivoController().get_all_periodo_letivos()
+    if not data:
+        return jsonify({"error": "There are no periodo letivos in the database"}), 400
+
+    return jsonify(data), 200

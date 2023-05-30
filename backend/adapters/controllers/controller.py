@@ -3,9 +3,12 @@ between the frontend adapter and the domain layer without exposing the
 database adapter to the frontend adapter.
 """
 
-from backend.core.domain.services import AlunoService, ProfessorService
+from backend.core.domain.services import (
+    AlunoService, ProfessorService, PeriodoLetivoService
+)
 from backend.adapters.database.repositories import (
-    AlunoRepositoryPostgres, ProfessorRepositoryPostgres
+    AlunoRepositoryPostgres, ProfessorRepositoryPostgres,
+    PeriodoLetivoRepositoryPostgres
 )
 from backend.adapters.database.database import DatabaseSession
 
@@ -102,3 +105,39 @@ class ProfessorController:
         """Removes an existing Professor object from the repository."""
         return self.professor_service.remove_professor(professor_id)
         # return True
+
+
+class PeriodoLetivoController:
+    """PeriodoLetivo controller class for adapters. It provides methods for
+    creating, updating, and retrieving PeriodoLetivo objects. It takes a db object,
+    an PeriodoLetivoRepository object, and an PeriodoLetivoService object as dependencies.\\
+    This class enables the communication between the frontend adapter and
+    the domain layer, without exposing the database adapter to the
+    frontend adapter.
+    """
+    def __init__(self) -> None:
+        """Initializes the controller with a db object, an PeriodoLetivoRepository
+        object, and an PeriodoLetivoService object."""
+        database = DatabaseSession()
+        self.database_session = database.get_db_session()
+        self.periodo_letivo_repository = PeriodoLetivoRepositoryPostgres(self.database_session)
+        self.periodo_letivo_service = PeriodoLetivoService(self.periodo_letivo_repository)
+
+    def get_all_periodo_letivos(self):
+        """Retrieves a list of all PeriodoLetivo objects from the repository."""
+        return self.periodo_letivo_service.get_all_periodos_letivos()
+
+    def create(self, start_date, end_date, class_shift):
+        """Creates a new PeriodoLetivo object and saves it to the repository."""
+        return self.periodo_letivo_service.create_periodo_letivo(start_date, end_date, class_shift)
+
+    def update(self, periodo_letivo_id, start_date=None, end_date=None,
+                        class_shift=None):
+        """Updates an existing PeriodoLetivo object and saves it to the repository."""
+        return self.periodo_letivo_service.update_periodo_letivo(periodo_letivo_id, start_date,
+                                                                 end_date, class_shift)
+
+
+    def remove(self, periodo_letivo_id):
+        """Removes an existing PeriodoLetivo object from the repository."""
+        return self.periodo_letivo_service.remove_periodo_letivo(periodo_letivo_id)

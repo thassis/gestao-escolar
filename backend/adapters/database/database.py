@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker, Session, relationship
 import sys
 sys.path.append('../../../')
 
-from backend.core.domain.models import Aluno
+from backend.core.domain.models import Aluno, PeriodoLetivo
 
 class DatabaseSession:
     """Database session class for SQLAlchemy. It creates a database engine
@@ -111,6 +111,25 @@ class PeriodoLetivoORM(Base):
     end_date = Column(Date, nullable=False)
     class_shift = Column(String(100), nullable=False)
     dias_sem_aula = relationship("DiaSemAulaORM", backref="periodo_letivo")
+
+    @staticmethod
+    def from_periodo_letivo(periodo_letivo):
+        """Converts a PeriodoLetivo object to a PeriodoLetivoORM object."""
+        return PeriodoLetivoORM(
+            start_date=periodo_letivo.start_date,
+            end_date=periodo_letivo.end_date,
+            class_shift=periodo_letivo.class_shift
+        )
+
+    @staticmethod
+    def to_periodo_letivo(periodo_letivo_orm):
+        """Converts a PeriodoLetivoORM object to a PeriodoLetivo object."""
+        return PeriodoLetivo(
+            id=periodo_letivo_orm.id,
+            start_date=periodo_letivo_orm.start_date,
+            end_date=periodo_letivo_orm.end_date,
+            class_shift=periodo_letivo_orm.class_shift
+        )
 
 
 class DiaSemAulaORM(Base):
