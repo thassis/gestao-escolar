@@ -43,7 +43,7 @@ const ScheduledEvents = () => {
 
   const RegisterEvent = require('../../images/evento3.jpg');
 
-  const getRandomImage = () => {
+  const getRandomImage = (index: number) => {
     const images = [
       require('../../images/evento.jpg'),
       require('../../images/evento3.jpg'),
@@ -71,7 +71,7 @@ const ScheduledEvents = () => {
       // Adicione mais imagens aqui, se necessário
     ];
 
-    const randomIndex = Math.floor(Math.random() * images.length);
+    const randomIndex = index % images.length;
     return images[randomIndex];
   };
 
@@ -80,10 +80,9 @@ const ScheduledEvents = () => {
     console.log(valueStr)
 
     if (valueStr) {
-      const value = JSON.parse(valueStr);
-      if (value) {
-        setEvents(prev => [...prev, { ...value, date: new Date(value.date) }]);
-        setEvents(prev => [...prev, { ...value, date: new Date(value.date) }]);
+      const values = JSON.parse(valueStr);
+      if (values?.length) {
+        setEvents(prev => [...prev, ...values.map((value: any) => ({ ...value, date: new Date(value.date) }))]);
       }
     }
   }, [])
@@ -127,7 +126,7 @@ const ScheduledEvents = () => {
                   <CardMedia
                     sx={{ minHeight: "200px", maxHeight: "200px", minWidth: "200px", maxWidth: "200px" }}
                     component={"img"}
-                    src={getRandomImage()}
+                    src={getRandomImage(index)}
                     alt={menu.name}
                   />
                   <CardContent>
@@ -157,7 +156,7 @@ const ScheduledEvents = () => {
                   <CardMedia
                     sx={{ minHeight: "200px", maxHeight: "200px", minWidth: "200px", maxWidth: "200px" }}
                     component={"img"}
-                    src={getRandomImage()}
+                    src={getRandomImage(index)}
                     alt={menu.name}
                   />
                   <CardContent>

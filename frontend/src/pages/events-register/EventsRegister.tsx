@@ -20,7 +20,17 @@ const EventsRegister = () => {
   const [description, setDescription] = React.useState('');
   
   const onSave = () => {
-    localStorage.setItem(STORAGE_EVENT, JSON.stringify({name, description, date}));
+    const valueStr = localStorage.getItem(STORAGE_EVENT);
+
+    const values = [{name, description, date}]
+
+    if(valueStr) {
+      const events = JSON.parse(valueStr);
+      values.push(...events);
+      values.reverse();
+    }
+
+    localStorage.setItem(STORAGE_EVENT, JSON.stringify(values));
 
     window.location.replace('/scheduled-events');
   }
@@ -45,7 +55,7 @@ const EventsRegister = () => {
             value={date}
             onChange={(e) => setDate(e.target.value)}
             type="date"
-            label="Data de Nascimento"
+            label="Data do evento"
             variant="outlined"
           />
 
