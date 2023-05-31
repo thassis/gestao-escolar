@@ -10,17 +10,75 @@ Criar um sistema de gestão escolar (customizado), para oferecer a um administra
 
 ## Tecnologias
 ### _Backend_
-- Python
-- Django
+- Flask
+- SQLAlchemy
 - PostgreSQL
+- Python
 ### _Frontend_
 - React
+- Material UI
+- Typescript
+### Infraestrutura
+- Docker
 
 ## Membros e papéis
 - Daniel: Frontend
 - Fábio: Backend
 - Misael: Backend
 - Thiago: Frontend
+
+
+## Arquitetura do sistema: Hexagonal
+- Por que o sistema está adotando essa arquitetura?
+  - A arquitetura adotada permite implementar a parte principal do sitema, independente da tecnologia utilizada.
+    Dessa maneira, a lógica do negócio, como criar e editar alunos, adicionar faltas, adicionar eventos, etc, pode ser
+    implementada de forma independente.
+- Quais são as portas e adaptadores? Qual o objetivo deles?
+  - As portas de saída estão implementadas usando uma interface em Python, que é implementada pelo adaptador de banco de dados. Dessa maneira, a lógica do negócio não precisa saber qual banco de dados está sendo utilizado.
+  - As portas de entrada estão implementadas usando uma classe Controller, que encapsula o acesso dos serviços pelo adaptador do frontend.
+  - O adaptador do backend implementa a interface (porta de saída). Ele é responsável por acessar o banco de dados e retornar os dados para o controller.
+  - O adaptador do frontend implementa a API utilizada para comunicar com o frontend. Ele é responsável por receber os dados do frontend e repassar para o controller. Também é responsável por receber os dados do controller e repassar para o frontend.
+
+- TODO: Pode-se dar pequenos exemplos de código e diagramas
+  - Exemplo de código:
+    - Controller
+    ```python
+    class AlunoController:
+      def __init__(self, aluno_repository: AlunoRepository):
+        self.aluno_repository = aluno_repository
+
+      def cadastrar_aluno(self, nome: str, email: str, telefone: str):
+        aluno = Aluno(nome=nome, email=email, telefone=telefone)
+        self.aluno_repository.cadastrar_aluno(aluno)
+    ```
+    - Repositório
+    ```python
+    class AlunoRepository:
+      def __init__(self, db: Database):
+        self.db = db
+
+      def cadastrar_aluno(self, aluno: Aluno):
+        self.db.add(aluno)
+        self.db.commit()
+    ```
+    - Adaptador do backend
+    ```python
+    class AlunoAdapter:
+      def __init__(self, aluno_controller: AlunoController):
+        self.aluno_controller = aluno_controller
+
+      def cadastrar_aluno(self, nome: str, email: str, telefone: str):
+        self.aluno_controller.cadastrar_aluno(nome, email, telefone)
+    ```
+    - Adaptador do frontend
+    ```python
+    class AlunoAdapter:
+      def __init__(self, aluno_controller: AlunoController):
+        self.aluno_controller = aluno_controller
+
+      def cadastrar_aluno(self, nome: str, email: str, telefone: str):
+        self.aluno_controller.cadastrar_aluno(nome, email, telefone)
+    ```
 
 ## Backlog do Produto
 <details>
