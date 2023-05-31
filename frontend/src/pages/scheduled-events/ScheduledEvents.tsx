@@ -77,7 +77,6 @@ const ScheduledEvents = () => {
 
   useEffect(() => {
     const valueStr = localStorage.getItem(STORAGE_EVENT);
-    console.log(valueStr)
 
     if (valueStr) {
       const values = JSON.parse(valueStr);
@@ -86,8 +85,6 @@ const ScheduledEvents = () => {
       }
     }
   }, [])
-
-  console.log({ events })
 
   return (
     <>

@@ -29,6 +29,7 @@ import {
 } from "services/alunos/AlunosServices";
 import { BoxForm, BoxList, BoxSelect, PaperList } from "./styles";
 import { ATTENDANCE_LIST } from "utils/storageKeys";
+import { INoClassDays, NoClassDaysServices } from "services/no-class-days/NoClassDaysServices";
 
 const currentYear = new Date().getFullYear();
 
@@ -52,7 +53,6 @@ export interface IRow extends IListagemALunos {
 }
 
 const AttendanceList = () => {
-  console.log(getEmptyAttendance())
   const currentMonth = new Date().getMonth() + 1;
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -60,6 +60,7 @@ const AttendanceList = () => {
   const [rows, setRows] = useState<IRow[]>([]);
   const [selectedMonth, setSelectMonth] = useState(currentMonth);
   const [hasChanges, setHasChanges] = useState(false);
+  const [noClassDays, setNoClassDays] = useState<INoClassDays[]>([]);
 
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
@@ -70,7 +71,6 @@ const AttendanceList = () => {
   }, [searchParams]);
 
   const onChangeMonth = (month: number) => {
-    console.log(month);
     setSelectMonth(month);
   };
 
@@ -102,18 +102,38 @@ const AttendanceList = () => {
     alert("Dados salvos com sucesso!");
   };
 
+  const getWeekDay = (year: number, month: number, day: number) => {
+    const dayName = new Intl.DateTimeFormat("pt-BR", {
+      weekday: "short",
+      }).format(new Date(`${year}-${month}-${day}`));
+    return dayName;
+  }
+
+  const isDateAvailable = (date: string) => {
+    const day = new Date(date).getDay();
+
+    const isNoClassDay = noClassDays.some(noClassDay => {
+      const classDate = new Date(noClassDay.date);
+      classDate.setHours(0,0,0,0);
+      classDate.setDate(classDate.getDate() + 1);
+      return classDate.getTime() === new Date(date).getTime()
+    });
+
+    return day !== 0 && day !== 6 && !isNoClassDay;
+  }
+
   const getAttendaceByStudentMonth = (row: IRow) => {
     const attendanceByMonth = row.attendanceList.filter(attendance => {
       const month = parseInt(attendance.date.split('-')[0])
       return month === selectedMonth;
     });
 
-    console.log(attendanceByMonth.length)
-
     return attendanceByMonth.map((attendance, index) => (
       <TableCell key={index}>
         <Checkbox
-          disabled={new Date().getTime() < new Date(attendance.date).getTime()}
+          style={{ margin: '0px 16px'}}
+          indeterminate={!isDateAvailable(attendance.date)}
+          disabled={new Date().getTime() < new Date(attendance.date).getTime() || !isDateAvailable(attendance.date)}
           checked={attendance.isPresent}
           onChange={() =>
             handleToggleDay(row.id, attendance.date)
@@ -123,7 +143,19 @@ const AttendanceList = () => {
     ))
   }
 
+  const getNoClassDays = () => {
+    NoClassDaysServices.getAll().then((result) => {
+      if (result instanceof Error) {
+        alert(result.message);
+      } else {
+        setNoClassDays(result);
+      }
+    })
+  }
+
   useEffect(() => {
+    getNoClassDays();
+
     AlunosServices.getAll(pagina, busca).then((result) => {
       if (result instanceof Error) {
         alert(result.message);
@@ -214,10 +246,10 @@ const AttendanceList = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell width={150}>Nome</TableCell>
+                <TableCell>Nome</TableCell>
                 {[...Array(numberOfDays)].map((_, index) => (
-                  <TableCell key={index} width={20}>
-                    {index + 1}
+                  <TableCell key={index}>                    
+                    {`${index + 1}, ${getWeekDay(currentYear, selectedMonth, index + 1)}`}
                   </TableCell>
                 ))}
               </TableRow>

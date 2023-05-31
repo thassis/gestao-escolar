@@ -44,7 +44,6 @@ const NoClassDays = () => {
   };
 
   useEffect(() => {
-    console.log("use effect");
     NoClassDaysServices.getAll()
       .then((response) => {
         setNoClassDays(response);

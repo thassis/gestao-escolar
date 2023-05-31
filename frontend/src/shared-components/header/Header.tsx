@@ -76,8 +76,8 @@ const Header = () => {
           onClick={toggleDrawerOpen}
         />
         <ListItemLink 
-          to="/periodo-letivo" 
-          label={"Período Letivo"} 
+          to="/no-class-day" 
+          label={"Dias sem aula"} 
           onClick={toggleDrawerOpen}
         />
       </NavBox>

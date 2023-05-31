@@ -29,11 +29,13 @@ import {
 import { getEmptyAttendance, IRow } from "pages/presential-list/AttendanceList";
 import { ATTENDANCE_LIST } from "utils/storageKeys";
 import AttendanceBarChart from "./views/AttendanceBarChart";
+import { INoClassDays, NoClassDaysServices } from "services/no-class-days/NoClassDaysServices";
 const AttendanceReport = () => {
   //Definindo os stats
   const [searchParams, setSearchParams] = useSearchParams();
   const [totalCount, setTotalCount] = useState(0);
   const [rows, setRows] = useState<IRow[]>([]);
+  const [noClassDays, setNoClassDays] = useState<INoClassDays[]>([]);
 
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
@@ -44,13 +46,30 @@ const AttendanceReport = () => {
     return Number(searchParams.get("pagina") || "1");
   }, [searchParams]);
 
+  const isDateAvailable = (date: string) => {
+    const day = new Date(date).getDay();
+
+    const isNoClassDay = noClassDays.some(noClassDay => {
+      const classDate = new Date(noClassDay.date);
+      classDate.setHours(0,0,0,0);
+      classDate.setDate(classDate.getDate() + 1);
+      return classDate.getTime() === new Date(date).getTime()
+    });
+
+    return day !== 0 && day !== 6 && !isNoClassDay;
+  }
+
   const getAttendanceQtd = (row: IRow, quantifyPresent: boolean) => {
+    console.log(row)
     return row.attendanceList.reduce((acc, current) => {
       if (new Date(current.date).getTime() < new Date().getTime()) {
-        if (current.isPresent) {
-          return quantifyPresent ? acc + 1 : acc;
+        if(isDateAvailable(current.date)) {
+          if (current.isPresent) {
+            return quantifyPresent ? acc + 1 : acc;
+          }
+          return quantifyPresent ? acc : acc + 1;
         }
-        return quantifyPresent ? acc : acc + 1;
+        return acc;
       }
       return acc;
     }, 0);
@@ -63,8 +82,19 @@ const AttendanceReport = () => {
     ).toPrecision(2)} %`;
   };
 
-  //Realizar as consultas dentro de um useEffect
+  const getNoClassDays = () => {
+    NoClassDaysServices.getAll().then((result) => {
+      if (result instanceof Error) {
+        alert(result.message);
+      } else {
+        setNoClassDays(result);
+      }
+    })
+  }
+
   useEffect(() => {
+    getNoClassDays();
+
     AlunosServices.getAll(pagina, busca).then((result) => {
       if (result instanceof Error) {
         alert(result.message);
@@ -135,7 +165,7 @@ const AttendanceReport = () => {
       </Typography>
 
       <Box display="flex" flexDirection="row">
-        <Box sx={{ width: "50%", flexBasis: "50%" }}>
+        <Box sx={{ width: "50%", flexBasis: "50%", marginBottom: '60px' }}>
           <TableContainer
             component={Paper}
             variant="outlined"
@@ -154,7 +184,7 @@ const AttendanceReport = () => {
               <TableBody>
                 {rows.length > 0 ? (
                   rows.map((row) => (
-                    <TableRow data-testid="student-row">
+                    <TableRow key={row.id} data-testid="student-row">
                       <TableCell>{row.name}</TableCell>
                       <TableCell>{getAttendanceQtd(row, true)}</TableCell>
                       <TableCell>{getAttendanceQtd(row, false)}</TableCell>
@@ -197,7 +227,7 @@ const AttendanceReport = () => {
           </TableContainer>
         </Box>
         <Box sx={{ width: "50%", flexBasis: "50%", padding: '32px' }}>
-          <AttendanceBarChart students={rows}/>
+          <AttendanceBarChart students={rows} noClassDays={noClassDays} />
         </Box>
       </Box>
     </>

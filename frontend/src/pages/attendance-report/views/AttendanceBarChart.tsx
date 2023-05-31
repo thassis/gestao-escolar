@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from "chart.js";
 import { IRow } from "pages/presential-list/AttendanceList";
+import { INoClassDays } from "services/no-class-days/NoClassDaysServices";
 
 ChartJS.register(
   CategoryScale,
@@ -21,14 +22,25 @@ ChartJS.register(
 
 type AttendanceBarChartProps = {
   students: IRow[];
+  noClassDays: INoClassDays[]
 };
 
 export default function AttendanceBarChart({
   students,
+  noClassDays,
 }: AttendanceBarChartProps) {
   const checkDateAvailability = (date: string) => {
     if (new Date(date).getTime() <= new Date().getTime()) {
-      return true;
+      const day = new Date(date).getDay();
+
+      const isNoClassDay = noClassDays.some(noClassDay => {
+        const classDate = new Date(noClassDay.date);
+        classDate.setHours(0,0,0,0);
+        classDate.setDate(classDate.getDate() + 1);
+        return classDate.getTime() === new Date(date).getTime()
+      });
+
+      return day !== 0 && day !== 6 && !isNoClassDay;
     }
 
     return false;

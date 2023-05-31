@@ -47,7 +47,6 @@ const PeriodoLetivo = () => {
   };
 
   useEffect(() => {
-    console.log("use effect");
     PeriodoLetivoServices.getAll()
       .then((response) => {
         setPeriodosLetivo(response);

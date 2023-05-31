@@ -11,14 +11,8 @@ import { Descricao, Subtitle } from "./styles";
 import { nextEvent } from "data-front/nextEvent";
 import { MenuList } from "data-front/data";
 
-interface Params {
-  name: string;
-}
 
 const EventsNext = () => {
-  const location = useLocation();
-  const { name } = location.state;
-  console.log(name)
   //Importando as imagens
    const EventoDeTecnologia = require('../../images/Rectangle16.png');
    const EventoDeSaude = require('../../images/Rectangle17.png');
