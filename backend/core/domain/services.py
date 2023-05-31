@@ -91,10 +91,10 @@ class AlunoService:
             tutor_phone=tutor_phone,
             class_shift=class_shift
         )
-        aluno = self.aluno_repository.save(aluno)
-        if isinstance(aluno, str): # if aluno is not found
-            return aluno
-        return aluno
+        aluno_result = self.aluno_repository.save(aluno)
+        if isinstance(aluno_result, str): # if aluno is not created
+            return aluno_result
+        return aluno_result
 
 
     def update_aluno(self, aluno_id, name=None, born_date=None,
@@ -117,8 +117,10 @@ class AlunoService:
             aluno.tutor_phone = tutor_phone
         if class_shift is not None:
             aluno.class_shift = class_shift
-        self.aluno_repository.save(aluno)
-        return aluno
+        aluno_result = self.aluno_repository.save(aluno)
+        if isinstance(aluno_result, str): # if aluno is not updated
+            return aluno_result
+        return aluno_result
 
 
     def remove_aluno(self, aluno_id):

@@ -81,12 +81,12 @@ class PeriodoLetivoRepository(ABC):
     for saving, retrieving, and deleting PeriodoLetivo objects."""
 
     @abstractmethod
-    def save(self, periodo_letivo) -> None:
+    def save(self, periodo_letivo) -> PeriodoLetivo:
         """Saves a PeriodoLetivo object to the repository."""
         pass
 
     @abstractmethod
-    def get_by_id(self, periodo_letivo_id: int) -> None:
+    def get_by_id(self, periodo_letivo_id: int) -> PeriodoLetivo | str:
         """Retrieves a PeriodoLetivo object from the repository by its ID."""
         pass
 
@@ -111,7 +111,7 @@ class DiaSemAulaRepository(ABC):
         pass
 
     @abstractmethod
-    def get_by_id(self, dia_sem_aula_id: int):
+    def get_by_id(self, dia_sem_aula_id: int) -> DiaSemAula:
         """Retrieves a DiaSemAula object from the repository by its ID."""
         pass
 
@@ -121,6 +121,6 @@ class DiaSemAulaRepository(ABC):
         pass
 
     @abstractmethod
-    def get_all_dias_sem_aula(self):
+    def get_all_dias_sem_aula(self) -> list[DiaSemAula]:
         """Retrieves all DiaSemAula objects from the repository."""
         pass
