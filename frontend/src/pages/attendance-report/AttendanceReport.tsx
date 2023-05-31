@@ -28,6 +28,7 @@ import {
 } from "services/alunos/AlunosServices";
 import { getEmptyAttendance, IRow } from "pages/presential-list/AttendanceList";
 import { ATTENDANCE_LIST } from "utils/storageKeys";
+import AttendanceBarChart from "./views/AttendanceBarChart";
 const AttendanceReport = () => {
   //Definindo os stats
   const [searchParams, setSearchParams] = useSearchParams();
@@ -45,19 +46,22 @@ const AttendanceReport = () => {
 
   const getAttendanceQtd = (row: IRow, quantifyPresent: boolean) => {
     return row.attendanceList.reduce((acc, current) => {
-      if(new Date(current.date).getTime() < new Date().getTime()){
-        if(current.isPresent){
+      if (new Date(current.date).getTime() < new Date().getTime()) {
+        if (current.isPresent) {
           return quantifyPresent ? acc + 1 : acc;
         }
-        return quantifyPresent ? acc : acc + 1
+        return quantifyPresent ? acc : acc + 1;
       }
       return acc;
-    }, 0)
-  }
+    }, 0);
+  };
 
   const getAttendancePercent = (row: IRow) => {
-    return `${(getAttendanceQtd(row, false) / (getAttendanceQtd(row, true) || 1)).toPrecision(2)} %`
-  }
+    return `${(
+      getAttendanceQtd(row, false) /
+      (getAttendanceQtd(row, true) + getAttendanceQtd(row, false) || 1)
+    ).toPrecision(2)} %`;
+  };
 
   //Realizar as consultas dentro de um useEffect
   useEffect(() => {
@@ -88,7 +92,9 @@ const AttendanceReport = () => {
               tutor_name: dados[i].tutor_name,
               tutor_phone: dados[i].tutor_phone,
               class_shift: dados[i].class_shift,
-              attendanceList: localAdaptedData.find(data => data.id === dados[i].id)?.attendanceList || getEmptyAttendance(),
+              attendanceList:
+                localAdaptedData.find((data) => data.id === dados[i].id)
+                  ?.attendanceList || getEmptyAttendance(),
             };
             adaptedData.push(adaptedItem);
           }
@@ -190,8 +196,8 @@ const AttendanceReport = () => {
             </Table>
           </TableContainer>
         </Box>
-        <Box sx={{ width: "50%", flexBasis: "50%", marginLeft: "40px" }}>
-          Criação do Dashboard
+        <Box sx={{ width: "50%", flexBasis: "50%", padding: '32px' }}>
+          <AttendanceBarChart students={rows}/>
         </Box>
       </Box>
     </>
