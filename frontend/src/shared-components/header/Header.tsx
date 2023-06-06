@@ -57,7 +57,7 @@ const Header = () => {
       <NavBox>
         <ListItemLink 
           to="/home" 
-          label={"home"} 
+          label={"Home"} 
           onClick={toggleDrawerOpen}
         />
         <ListItemLink 
