@@ -161,7 +161,7 @@ const ScheduledEvents = () => {
                       {menu.name}
                     </Descricao>
 
-                    <Descricao variant="body1" gutterBottom>
+                    <Descricao variant="body1" gutterBottom data-testid="event-date">
                       {menu.date.toLocaleDateString()}
                     </Descricao>
                   </CardContent>
