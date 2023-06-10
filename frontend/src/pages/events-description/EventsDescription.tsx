@@ -1,15 +1,10 @@
 import React from "react";
 import { Box } from '@mui/system';
 import { useLocation, useNavigate } from "react-router-dom";
-import { Button, Card, CardActionArea, CardContent, Grid, IconButton, Paper, Typography } from "@mui/material";
-import CardMedia from '@mui/material/CardMedia';
+import { Typography } from "@mui/material";
 
 import Header from "shared-components/header/Header";
-import { Descricao, Subtitle } from "./styles";
-import { nextEvent } from "data-front/nextEvent";
-import { MenuList } from "data-front/data";
-
-import { EventParams } from "pages/scheduled-events/ScheduledEvents";
+import { Subtitle } from "./styles";
 
 const EventsDescription = () => {
 
@@ -20,7 +15,6 @@ const EventsDescription = () => {
     window.location.replace('/events-add-photos');
   }
 
-  
   return (
     <>
       <Header />
