@@ -47,6 +47,7 @@ const EventsRegister = () => {
             type="text"
             label="Nome do evento"
             variant="outlined"
+            data-test="name_event"
           />
 
           <TextField
@@ -57,6 +58,7 @@ const EventsRegister = () => {
             type="date"
             label="Data do evento"
             variant="outlined"
+            data-test="date"
           />
 
         </Column>
@@ -69,6 +71,7 @@ const EventsRegister = () => {
             type="text"
             label="Descrição do Evento"
             variant="outlined"
+            data-test="description_event"
           />
         </Column>
       </Container>

@@ -80,6 +80,7 @@ const EditRegisterStudent = () => {
             onChange={(e) => setFullName(e.target.value)}
             label="Nome completo"
             variant="outlined"
+            data-test="name_aluno"
           />
 
           <TextField
@@ -90,6 +91,7 @@ const EditRegisterStudent = () => {
             onChange={(e) => setDataNascimento(e.target.value)}
             label="Data de Nascimento"
             variant="outlined"
+            data-test="date"
           />
 
           <TextField
@@ -99,6 +101,7 @@ const EditRegisterStudent = () => {
             onChange={(e) => setAddress(e.target.value)}
             label="Endereço"
             variant="outlined"
+            data-test="address"
           />
         </Column>
 
@@ -110,6 +113,7 @@ const EditRegisterStudent = () => {
             onChange={(e) => setResponsibleTeacher(e.target.value)}
             label="Nome do tutor responsável"
             variant="outlined"
+            data-test="name_tutor"
           />
 
           <TextField
@@ -119,6 +123,7 @@ const EditRegisterStudent = () => {
             onChange={(e) => setPhoneResponsibleTeacher(e.target.value)}
             label="Telefone do tutor responsável"
             variant="outlined"
+            data-test="phone_tutor"
           />
 
           <TextField

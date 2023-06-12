@@ -84,6 +84,7 @@ const RegisterStudent = () => {
             onChange={(e) => setFullName(e.target.value)}
             label="Nome completo"
             variant="outlined"
+            data-test="name_aluno"
           />
 
           <TextField
@@ -95,6 +96,7 @@ const RegisterStudent = () => {
             onChange={(e) => setDataNascimento(e.target.value)}
             label="Data de Nascimento"
             variant="outlined"
+            data-test="date"
           />
 
           <TextField
@@ -105,6 +107,7 @@ const RegisterStudent = () => {
             onChange={(e) => setAddress(e.target.value)}
             label="Endereço"
             variant="outlined"
+            data-test="address"
           />
         </Column>
 
@@ -117,6 +120,7 @@ const RegisterStudent = () => {
             onChange={(e) => setResponsibleTeacher(e.target.value)}
             label="Nome do tutor responsável"
             variant="outlined"
+            data-test="name_tutor"
           />
 
           <TextField
@@ -127,6 +131,7 @@ const RegisterStudent = () => {
             onChange={(e) => setPhoneResponsibleTeacher(e.target.value)}
             label="Telefone do tutor responsável"
             variant="outlined"
+            data-test="phone_tutor"
           />
 
           <TextField
@@ -150,7 +155,7 @@ const RegisterStudent = () => {
       </Container>
 
       <BodyRegisterButtonContainer>
-        <RegisterButton variant="contained" onClick={handleSave}>
+        <RegisterButton id="botton" variant="contained" onClick={handleSave}>
           Salvar Informações
         </RegisterButton>
       </BodyRegisterButtonContainer>
