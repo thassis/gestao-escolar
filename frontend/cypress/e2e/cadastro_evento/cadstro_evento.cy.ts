@@ -24,6 +24,7 @@ describe('Teste Funcional de Login', () => {
         cy.wait(1000);
         cy.get('.css-xi606m > .MuiButtonBase-root').click();
         cy.wait(1000);
+        cy.scrollTo(0, 1000);
         cy.get(':nth-child(2) > .MuiTypography-h4').should('contain', 'Próximos eventos');
     });
   });

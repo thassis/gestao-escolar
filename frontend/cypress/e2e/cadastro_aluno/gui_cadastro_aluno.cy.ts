@@ -15,7 +15,7 @@ describe('Teste Funcional de Login', () => {
         // Navegação na tela
         cy.get(':nth-child(1) > .MuiPaper-root > .MuiCardContent-root').click();
         cy.wait(1000);
-        cy.get('[data-test="name_aluno"]').type('Felipe Silva');
+        cy.get('[data-test="name_aluno"]').type('Jupira Silva');
         cy.wait(1000);
         cy.get('[data-test="date"]').type('2023-05-01');
         cy.wait(1000);
@@ -32,6 +32,10 @@ describe('Teste Funcional de Login', () => {
         cy.wait(1000);
         cy.get('button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.css-1nmkmc-MuiButtonBase-root-MuiButton-root').click();
         cy.wait(1000);
+        cy.scrollTo(0, 500);
+        cy.get(':nth-child(4) > .MuiPaper-root > .MuiCardContent-root').click();
+        cy.wait(1000);
+        cy.get('input#\\:r0\\:').type('Jupira Silva');
         cy.get('.css-1v45ur3-MuiTypography-root').should('contain', 'Sistema de');
     });
   });

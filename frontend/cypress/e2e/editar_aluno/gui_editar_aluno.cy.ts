@@ -30,6 +30,7 @@ describe('Teste Funcional de Login', () => {
       cy.wait(1000);
       cy.get('.css-1vg26sl > .MuiButtonBase-root').click();
       cy.wait(1000);
+      cy.scrollTo("bottom"); 
       cy.get('.css-1v45ur3-MuiTypography-root').should('contain', 'Sistema de');
     });
   });
