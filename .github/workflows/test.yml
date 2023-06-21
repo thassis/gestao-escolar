@@ -1,0 +1,47 @@
+name: Frontend CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+  # Only run if changes are made in the frontend directory
+    paths:
+      - 'frontend/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Change working directory to frontend
+        run: cd frontend
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+      
+      #- name: Build Docker image
+      #  run: |
+      #    docker-compose -f docker-compose.yml up --build -d db backend frontend
+      #    sleep 120
+
+      - name: Run tests
+        working-directory: ./frontend
+        run: npm run test
+      
+      #- name: Run tests sistema
+      #  working-directory: ./frontend
+      #  run: npx cypress run
+      
