@@ -44,8 +44,8 @@ jobs:
       - uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: /home/runner/work/gestao-escolar/gestao-escolar/backend/tests/
-          files: /home/runner/work/gestao-escolar/gestao-escolar/backend/tests/coverage.xml
-#           directory: /home/runner/work/gestao-escolar/gestao-escolar/
+#           directory: /home/runner/work/gestao-escolar/gestao-escolar/backend/tests/
+#           files: /home/runner/work/gestao-escolar/gestao-escolar/backend/tests/coverage.xml
+          directory: /home/runner/work/gestao-escolar/gestao-escolar/
           fail_ci_if_error: false
           verbose: true
