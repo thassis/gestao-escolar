@@ -40,7 +40,7 @@ jobs:
         run: docker-compose down
 
       # Upload coverage to Codecov
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
       - uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
